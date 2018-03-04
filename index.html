@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="flex-container">
+<header>
+  <h1>Welcome to eventFestIOC!</h1>
+  <div class="principal">
+    <button onclick="document.getElementById('login').style.display='block'" style="width:auto;">Login</button>
+    <button onclick="document.getElementById('signup').style.display='block'" style="width:auto;">Sign Up</button>
+  </div>
+</header>
+
+<nav class="nav">
+<ul>
+  <li><a href="#"><strong>Activitats</strong></a></li>
+  <li><a href="#"><strong>Cultura</strong></a></li>
+  <li><a href="#"><strong>Contacte</strong></a></li>
+</ul>
+</nav>
+
+<article class="article">
+  Benvingut <h1 id="userName_home"></h1></br>
+  Rol: <h1 id="userRole_home"></h1>
+</article>
+
+<footer> &copy; eventFestIOC</footer>
+</div>
+
+
+
+<div id="login" class="modal">
+  <form role="form" action="" method="post"  class="modal-content animate">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
+      <img src="img_avatar.png" alt="Avatar" class="avatar">
+    </div>
+
+    <div class="container">
+      <label for="uname"><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" name="uname" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" required>
+
+      <button type="submit" onclick="login()">Login</button>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn">Cancel</button>
+      <span class="psw">Has oblidat <a href="#">password?</a></span>
+    </div>
+  </form>
+</div>
+<!-- SugnUp-->
+<div id="signup" class="modal">
+  <span onclick="document.getElementById('signup').style.display='none'" class="close" title="Close Modal">&times;</span>
+    <form role="form" action="" method="post"  class="modal-content animate">
+    <div class="container">
+      <h1>Sign Up</h1>
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" name="email" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" required>
+
+      <label for="psw-repeat"><b>Repeteix el Password</b></label>
+      <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('signup').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="submit" onclick="save()" class="signupbtn">Sign Up</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

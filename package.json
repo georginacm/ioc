@@ -1,0 +1,11 @@
+{
+    "name": "eventfest-app",
+    "version": "0.1.0",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "devDependencies": {
+        "electron-packager": "^11.0.1"
+    }
+}
