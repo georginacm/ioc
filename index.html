@@ -31,10 +31,8 @@
 <footer> &copy; eventFestIOC</footer>
 </div>
 
-
-
 <div id="login" class="modal">
-  <form role="form" action="" method="post"  class="modal-content animate">
+  <div  class="modal-content animate">
     <div class="imgcontainer">
       <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
       <img src="img_avatar.png" alt="Avatar" class="avatar">
@@ -47,14 +45,14 @@
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psw" required>
 
-      <button type="submit" onclick="login()">Login</button>
+      <button type="submit" id="loginbutton" onclick="document.getElementById('login').style.display='none'">Login</button>
     </div>
 
     <div class="container" style="background-color:#f1f1f1">
       <button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn">Cancel</button>
       <span class="psw">Has oblidat <a href="#">password?</a></span>
     </div>
-  </form>
+  </div>
 </div>
 <!-- SugnUp-->
 <div id="signup" class="modal">
@@ -78,6 +76,8 @@
     </div>
   </form>
 </div>
-
+<script>
+     require('./renderer.js')
+</script>
 </body>
 </html>

@@ -61,3 +61,23 @@ app.on('activate', function () {
 })
 
 appMenu.renderMenu();
+
+
+// En el proceso principal.
+
+  ipcMain.on('asynchronous-message', (event, arg) => {
+    console.log(arg)  // imprime "ping"
+    event.sender.send('asynchronous-reply', 'pong_async')
+  })
+
+  ipcMain.on('synchronous-message', (event, arg) => {
+    console.log(arg)  // imprime "ping"
+    event.returnValue = 'pong_sync'
+  })
+
+  ipcMain.on('invokeAction', function(event, data){
+    //var result = processData(data);
+      console.log(data + "en main")
+    var result="georgina_result"
+    event.sender.send('actionReply', result)
+})
