@@ -13,8 +13,10 @@
 
 	</div>
   <div class="principal">
-    <button onclick="document.getElementById('login').style.display='block'" style="width:auto;">Login</button>
-    <button onclick="document.getElementById('signup').style.display='block'" style="width:auto;">Sign Up</button>
+		<bold><p id="userLoggedName" style="visibility:hidden;" style="width:auto;"></p></bold>
+		<button id="home_logoutbutton" class="cancelbtn" style="visibility:hidden;"  style="width:auto;">Logout</button>
+    <button id="home_loginbutton" onclick="document.getElementById('login').style.display='block'" style="width:auto;">Login</button>
+    <button id="home_signupbutton"  onclick="document.getElementById('signup').style.display='block'" style="width:auto;">Sign Up</button>
   </div>
 </header>
 
@@ -29,7 +31,8 @@
 
 <article class="article">
 	<span>  <h1 id="userName_home"></h1></span></br>
-	<span>  <p id="userRole_home"></span></p>
+	<span>  <h1 id="userEmail_home"></h1></span></br>
+	<span>  <p id="userRole_home" color="red"></span></p>
 </article>
 
 <footer> &copy; eventFestIOC</footer>

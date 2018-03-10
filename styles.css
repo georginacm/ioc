@@ -41,11 +41,11 @@ button:hover {
 }
 header .principal {
     float: right;
-    width: 200px;
+    width: 300px;
 }
 header .secundari {
     float: left;
-    width: calc(100% - 200px);
+    width: calc(100% - 300px);
 }
 header .secundari h1 {
     text-align: center;
