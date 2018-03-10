@@ -3,6 +3,7 @@
   let username= document.getElementById('userName_home')
   let role = document.getElementById('userRole_home')
   let loginButton = document.getElementById('loginbutton')
+  let adminToolsMenu = document.getElementById('adminTools')
   /*
   console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
 
@@ -23,6 +24,11 @@ loginButton.addEventListener('click', function(){
       var user=  JSON.parse(response);
       username.innerHTML= "Has accedit com a: "+ loginName;
       role.innerHTML = user.missatge.toString()
+      if(user.user_role== 0 || user.user_role== 1){
+        adminToolsMenu.style.display = "block";
+      }else{
+        adminToolsMenu.style.display = "none";
+      }
       console.log(response + " render")
       //processResponse(response);
     })

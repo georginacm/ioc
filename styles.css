@@ -210,6 +210,11 @@ footer {
   margin-top:15px;
 }
 
+#adminTools a {
+  color: red;
+  text-decoration-color: red;
+}
+
 @media all and (min-width: 768px) {
     .nav {
         text-align: left;
