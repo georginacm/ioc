@@ -30,12 +30,12 @@ loginButton.addEventListener('click', function(){
 
         if(response.user_role== 0 || response.user_role== 1){
           adminToolsMenu.style.display = "block";
-          document.getElementById('signup_admin').display="initial"
-          document.getElementById('signup_admin_label').display="initial"
+          document.getElementById('signup_admin').style.display="block"
+          document.getElementById('signup_admin_label').style.display="block"
         }else{
           adminToolsMenu.style.display = "none";
-          document.getElementById('signup_admin').display="none"
-          document.getElementById('signup_admin_label').display="none"
+          document.getElementById('signup_admin').style.display="none"
+          document.getElementById('signup_admin_label').style.display="none"
         }
       }
 
