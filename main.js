@@ -80,3 +80,9 @@ ipcMain.on('invokeLoginAction', function(event, data){
   console.info("login data:" + data.name +"  " + data.password);
   loginUtils.login(event, data);
 })
+
+
+ipcMain.on('invokeSignupAction', function(event, data){
+  console.info("signup data:" + data.name +"  " + data.password + " admin: "+ data.admin);
+  loginUtils.signup(event, data);
+})
