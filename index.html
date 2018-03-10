@@ -32,7 +32,7 @@
 <article class="article">
 	<span>  <h1 id="userName_home"></h1></span></br>
 	<span>  <h1 id="userEmail_home"></h1></span></br>
-	<span>  <p id="userRole_home" color="red"></span></p>
+	<span>  <p id="userRole_home" style="text-decoration-color:red;"></span></p>
 </article>
 
 <footer> &copy; eventFestIOC</footer>
@@ -79,8 +79,8 @@
       <label for="psw-repeat"><b>Repeteix el Password</b></label>
       <input type="password" id="signup_password2" placeholder="Repeat Password" name="psw-repeat" required>
 
-			<label for="role"><b>És Administador?</b></label>
-			<input type="checkbox" id="signup_admin"  name="admin" >
+			<label for="role" id="signup_admin_label" style="display:none;"><b>És Administador?</b></label>
+			<input type="checkbox" id="signup_admin" style="display:none;"  name="admin" >
 
       <div class="clearfix">
         <button type="button" onclick="document.getElementById('signup').style.display='none'" class="cancelbtn">Cancel</button>

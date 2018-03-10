@@ -73,5 +73,29 @@ module.exports = {
     reqPost.on('error', function(e) {
         console.error(e);
     });
+  },
+
+  logout: function(event, userData) {
+    var userName=userData.name;
+
+    var url="http://localhost:8080/eventfest/rest/users/disconnect";
+    url += "?login=" + userName;
+    url += "&token=" + token;
+
+    var reqGet = http.request(url, function(res) {
+          console.log("statusCode: ", res.statusCode);
+            res.on('data', function(userDataResult) {
+              console.info(' result:\n');
+              process.stdout.write(userDataResult);
+                var user=  JSON.parse(userDataResult);
+                token= null;
+                console.log("token: " +token);
+                event.sender.send('actionLogoutReply', user)
+            });
+        });
+    reqGet.end();
+    reqGet.on('error', function(e) {
+        console.error(e);
+    });
   }
 }

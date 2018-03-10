@@ -66,23 +66,18 @@ app.on('activate', function () {
 appMenu.renderMenu();
 
 
-ipcMain.on('asynchronous-message', (event, arg) => {
-  console.log(arg)  // imprime "ping"
-  event.sender.send('asynchronous-reply', 'pong_async')
-})
-
-ipcMain.on('synchronous-message', (event, arg) => {
-  console.log(arg)  // imprime "ping"
-  event.returnValue = 'pong_sync'
-})
-
+//Actions
 ipcMain.on('invokeLoginAction', function(event, data){
   console.info("login data:" + data.name +"  " + data.password);
   loginUtils.login(event, data);
 })
 
-
 ipcMain.on('invokeSignupAction', function(event, data){
   console.info("signup data:" + data.name +"  " + data.password + " admin: "+ data.admin);
   loginUtils.signup(event, data);
+})
+
+ipcMain.on('invokeLogoutAction', function(event, data){
+  console.info("logout data:" + data.name );
+  loginUtils.logout(event, data);
 })

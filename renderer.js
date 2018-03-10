@@ -10,16 +10,6 @@
   let signupButton = document.getElementById('signupbutton')
   let adminToolsMenu = document.getElementById('adminTools')
   let userLoggedName = document.getElementById('userLoggedName');
-  /*
-  console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
-
-  ipcRenderer.on('asynchronous-reply', (event, arg) => {
-    console.log(arg) // prints "pong"
-  })
-  ipcRenderer.send('asynchronous-message', 'ping')
-
-*/
-
 
 
 loginButton.addEventListener('click', function(){
@@ -37,10 +27,15 @@ loginButton.addEventListener('click', function(){
         userLoggedName.style.visibility = "visible";
         userLoggedName.innerHTML=loginName;
 
+
         if(response.user_role== 0 || response.user_role== 1){
           adminToolsMenu.style.display = "block";
+          document.getElementById('signup_admin').display="initial"
+          document.getElementById('signup_admin_label').display="initial"
         }else{
           adminToolsMenu.style.display = "none";
+          document.getElementById('signup_admin').display="none"
+          document.getElementById('signup_admin_label').display="none"
         }
       }
 
@@ -60,11 +55,31 @@ signupButton.addEventListener('click', function(){
     ipcRenderer.once('actionSignupReply', function(event, response){
       console.log(response.missatge);
       var user=  JSON.parse(response);
-      username.innerHTML= "Has accedit com a: "+ signupName ;
+      username.innerHTML= "S'ha registrat l'usuari: "+ signupName ;
       useremail.innerHTML=  "Amb email: "+ signupEmail
       role.innerHTML = user.missatge.toString();
       console.log(response + " render")
     })
 
    ipcRenderer.send('invokeSignupAction', { email: signupEmail, name: signupName, password: signupPassword, admin: isAdmin});
+});
+
+
+
+homeLogoutButton.addEventListener('click', function(){
+    var loginName= document.getElementById('login_username').value;
+
+    ipcRenderer.once('actionLogoutReply', function(event, response){
+      role.innerHTML = response.missatge.toString();
+      username.innerHTML= "Adéu!! "+ loginName;
+      homeLoginButton.style.display="initial";
+      userLoggedName.style.visibility = "visible";
+      userLoggedName.innerHTML="";
+      homeLogoutButton.style.visibility = "hidden";
+      useremail.style.visibility = "hidden";
+
+      console.log(response + " render")
+    })
+
+   ipcRenderer.send('invokeLogoutAction', {name: loginName});
 });
