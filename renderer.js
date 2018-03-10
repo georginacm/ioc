@@ -19,7 +19,7 @@ loginButton.addEventListener('click', function(){
     var loginName= document.getElementById('login_username').value;
     var loginPassword= document.getElementById('login_password').value;
 
-    ipcRenderer.once('actionReply', function(event, response){
+    ipcRenderer.once('actionLoginReply', function(event, response){
       var user=  JSON.parse(response);
       username.innerHTML= "Has accedit com a: "+ loginName;
       role.innerHTML = user.missatge.toString()
@@ -27,5 +27,5 @@ loginButton.addEventListener('click', function(){
       //processResponse(response);
     })
 
-   ipcRenderer.send('invokeAction', {name: loginName, password: loginPassword});
+   ipcRenderer.send('invokeLoginAction', {name: loginName, password: loginPassword});
 });

@@ -76,7 +76,7 @@ ipcMain.on('synchronous-message', (event, arg) => {
   event.returnValue = 'pong_sync'
 })
 
-ipcMain.on('invokeAction', function(event, data){
+ipcMain.on('invokeLoginAction', function(event, data){
   console.info("login data:" + data.name +"  " + data.password);
   loginUtils.login(event, data);
 })

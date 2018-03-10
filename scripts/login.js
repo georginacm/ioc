@@ -13,10 +13,10 @@ module.exports = {
 
     var reqGet = http.request(url, function(res) {
           console.log("statusCode: ", res.statusCode);
-            res.on('data', function(d) {
-                console.info('GET result:\n');
-                process.stdout.write(d);
-                event.sender.send('actionReply', d)
+            res.on('data', function(userDataResult) {
+                //console.info('GET result:\n');
+                //process.stdout.write(userDataResult);
+                event.sender.send('actionLoginReply', userDataResult)
             });
         });
     reqGet.end();
