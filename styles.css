@@ -1,54 +1,80 @@
 /*CSS de https://www.w3schools.com/*/
-
-body {font-family: Arial, Helvetica, sans-serif;}
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+input[type=text],
+input[type=password] {
+    display: inline-block;
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
     box-sizing: border-box;
+
+    border: 1px solid #ccc;
 }
 
 /* Set a style for all buttons */
+
 button {
-    background-color: #7fc382;
-    color: white;
+    width: 100%;
     padding: 14px 20px;
     margin: 8px 0;
-    border: none;
     cursor: pointer;
-    width: 100%;
+    color: #22a628;
+    border-color: #22a628;
+    border: 10px;
+    border-width: medium;
+    background-color: white;
+    font-weight: bold;
 }
 
 button:hover {
-    opacity: 0.8;
+    opacity: .8;
 }
-
+header .principal {
+    float: right;
+    width: 200px;
+}
+header .secundari {
+    float: left;
+    width: calc(100% - 200px);
+}
+header .secundari h1 {
+    text-align: center;
+}
 div.principal {
+    text-align: center;
 
-  text-align: center;
-  align-self: center;
+    align-self: center;
 }
 
 /* Extra styles for the cancel button */
 .cancelbtn {
     width: auto;
     padding: 10px 18px;
+
     background-color: #f44336;
 }
 
 /* Center the image and position the close button */
 .imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
     position: relative;
+
+    margin: 24px 0 12px 0;
+
+    text-align: center;
 }
 
 img.avatar {
     width: 20%;
+
     border-radius: 50%;
 }
 
@@ -63,47 +89,53 @@ span.psw {
 
 /* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
     top: 0;
+    left: 0;
+    z-index: 1; /* Sit on top */
+
+    display: none; /* Hidden by default */
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     padding-top: 60px;
+    overflow: auto; /* Enable scroll if needed */
+
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,.4); /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
 .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-    border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+
+    border: 1px solid #888;
+    background-color: #fefefe;
 }
 
 /* The Close Button (x) */
 .close {
     position: absolute;
-    right: 25px;
     top: 0;
-    color: #000;
+    right: 25px;
+
     font-size: 35px;
     font-weight: bold;
+
+    color: #000;
 }
 
 .close:hover,
 .close:focus {
-    color: red;
     cursor: pointer;
+
+    color: red;
 }
 
 /* Add Zoom Animation */
 .animate {
-    -webkit-animation: animatezoom 0.6s;
-    animation: animatezoom 0.6s
+    -webkit-animation: animatezoom .6s;
+            animation: animatezoom .6s;
 }
 
 
@@ -111,39 +143,89 @@ span.psw {
 
 .flex-container {
     display: -webkit-flex;
-   display: flex;
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
+    display:         flex;
+
     text-align: center;
+
+    -webkit-flex-flow: row wrap;
+            flex-flow: row wrap;
 }
 
 
 .flex-container > * {
     padding: 15px;
+
     -webkit-flex: 1 100%;
-    flex: 1 100%;
+            flex: 1 100%;
 }
 
 
 .article {
+    position: absolute;
+    top: 148px;
+    right: 0;
+    bottom: 20px;
+    left: 150px;
+
     text-align: left;
+
+    /*background-color: grey;*/
 }
 
-header {background: #749bc3;color:white;}
-footer {background: #4987ca;color:white;}
-.nav {background:#eee;}
+header {
+    height: 110px;
+
+    color: white;
+    background: #4987ca;
+}
+footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+
+    color: white;
+    background: #4987ca;
+}
+.nav {
+    position: absolute;
+    top: 148px;
+    z-index: 1;
+
+    height: 100%;
+
+    background: #eee;
+}
 
 .nav ul {
-    list-style-type: none;
     padding: 10;
+
+    list-style-type: none;
 }
 .nav ul a {
     text-decoration: none;
+
     text-decoration-color: #074788;
 }
 
 @media all and (min-width: 768px) {
-    .nav {text-align:left;-webkit-flex: 1 auto;flex:1 auto;-webkit-order:1;order:1;}
-    .article {-webkit-flex:5 0px;flex:5 0px;-webkit-order:2;order:2;}
-    footer {-webkit-order:3;order:3;}
+    .nav {
+        text-align: left;
+
+        -webkit-flex: 1 auto;
+                flex: 1 auto;
+        -webkit-order: 1;
+                order: 1;
+    }
+    .article {
+        -webkit-flex: 5 0;
+                flex: 5 0;
+        -webkit-order: 2;
+                order: 2;
+    }
+    footer {
+        -webkit-order: 3;
+                order: 3;
+    }
 }
