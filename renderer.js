@@ -31,8 +31,8 @@ loginButton.addEventListener('click', function(){
 
       if(response.token){
         username.innerHTML= "Has accedit com a: "+ loginName;
-        homeLoginButton.style.visibility="hidden";
-        homeSignupButton.style.visibility="hidden";
+        homeLoginButton.style.display="none";
+      //  homeSignupButton.style.visibility="hidden";
         homeLogoutButton.style.visibility = "visible";
         userLoggedName.style.visibility = "visible";
         userLoggedName.innerHTML=loginName;

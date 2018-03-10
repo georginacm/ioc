@@ -28,11 +28,9 @@ module.exports = {
   },
 
   signup:  function(event, userData) {
-    var pwd = userData.password;
-    console.log("isadmin: " + userData.admin)
     var rol = (userData.admin) ? 1 : 2;
-    console.log("rol: " + rol)
-    pwd= crypto.createHash('md5').update(pwd).digest("hex");
+    var pwd_signup = userData.password;
+    pwd_signup= crypto.createHash('md5').update(pwd_signup).digest("hex");
 
     var url="/eventfest/rest/users/create?token=";
     url += token;
@@ -40,13 +38,13 @@ module.exports = {
    console.log("signupurl:"+ url);
     var user= {
       user_login:userData.name,
-      user_pass: pwd,
+      user_pass: pwd_signup,
       user_email:userData.email,
       user_role:rol,
       user_token: token
     };
     var jsonObject = JSON.stringify(user);
-    console.log("signupdata:" + jsonObject);
+    console.log("signupdata: " + jsonObject);
     var postheaders = {
         'Content-Type' : 'application/json',
         'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')

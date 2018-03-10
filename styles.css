@@ -41,11 +41,11 @@ button:hover {
 }
 header .principal {
     float: right;
-    width: 300px;
+    width: 350px;
 }
 header .secundari {
     float: left;
-    width: calc(100% - 300px);
+    width: calc(100% - 350px);
 }
 header .secundari h1 {
     text-align: center;
@@ -56,11 +56,16 @@ div.principal {
     align-self: center;
 }
 
+.headername{
+  width:auto;
+ margin-right: 10px;
+ font-weight: bold;
+}
+
 /* Extra styles for the cancel button */
 .cancelbtn {
     width: auto;
     padding: 10px 18px;
-
     background-color: #f44336;
 }
 
@@ -166,7 +171,7 @@ span.psw {
     top: 148px;
     right: 0;
     bottom: 20px;
-    left: 150px;
+    left: 200px;
 
     text-align: left;
 
