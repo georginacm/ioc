@@ -20,15 +20,15 @@
 
 <nav class="nav">
 <ul>
-  <li><a href="#"><strong>Activitats</strong></a></li>
-  <li><a href="#"><strong>Cultura</strong></a></li>
-  <li><a href="#"><strong>Contacte</strong></a></li>
+  <li><div class="menu"><a href="#"><strong>Activitats</strong></a><div></li>
+  <li><div class="menu"><a href="#"><strong>Cultura</strong><div></a></li>
+  <li><div class="menu"><a href="#"><strong>Contacte</strong></a></div></li>
 </ul>
 </nav>
 
 <article class="article">
-  Benvingut <h1 id="userName_home"></h1></br>
-  Rol: <h1 id="userRole_home"></h1>
+	<span>  <h1 id="userName_home"></h1></span></br>
+	<span>  <p id="userRole_home"></span></p>
 </article>
 
 <footer> &copy; eventFestIOC</footer>
@@ -43,10 +43,10 @@
 
     <div class="container">
       <label for="uname"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required>
+      <input type="text" id="login_username" placeholder="Enter Username" name="uname" required>
 
       <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required>
+      <input type="password" id="login_password"  placeholder="Enter Password" name="psw" required>
 
       <button type="submit" id="loginbutton" onclick="document.getElementById('login').style.display='none'">Login</button>
     </div>

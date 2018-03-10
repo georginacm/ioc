@@ -1,6 +1,8 @@
 // En el proceso de renderizado (página web).
   const {ipcRenderer} = require('electron')
   let username= document.getElementById('userName_home')
+  let role = document.getElementById('userRole_home')
+  let loginButton = document.getElementById('loginbutton')
   /*
   console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
 
@@ -11,14 +13,19 @@
 
 */
 
-let loginButton = document.getElementById('loginbutton')
+
 
 loginButton.addEventListener('click', function(){
+    var loginName= document.getElementById('login_username').value;
+    var loginPassword= document.getElementById('login_password').value;
+
     ipcRenderer.once('actionReply', function(event, response){
-      username.innerHTML = response.toString()
+      var user=  JSON.parse(response);
+      username.innerHTML= "Has accedit com a: "+ loginName;
+      role.innerHTML = user.missatge.toString()
       console.log(response + " render")
       //processResponse(response);
     })
-   ipcRenderer.send('invokeAction', 'Georgina');
 
+   ipcRenderer.send('invokeAction', {name: loginName, password: loginPassword});
 });

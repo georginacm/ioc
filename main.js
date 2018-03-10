@@ -1,4 +1,7 @@
 const electron = require('electron')
+const crypto = require('crypto');
+const https = require('https');
+const http = require('http');
 
 // Module to control application life.
 const app = electron.app
@@ -17,7 +20,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 700})
+  mainWindow = new BrowserWindow({width: 850, height: 750})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -63,21 +66,40 @@ app.on('activate', function () {
 appMenu.renderMenu();
 
 
-// En el proceso principal.
-
-  ipcMain.on('asynchronous-message', (event, arg) => {
-    console.log(arg)  // imprime "ping"
-    event.sender.send('asynchronous-reply', 'pong_async')
-  })
-
-  ipcMain.on('synchronous-message', (event, arg) => {
-    console.log(arg)  // imprime "ping"
-    event.returnValue = 'pong_sync'
-  })
-
-  ipcMain.on('invokeAction', function(event, data){
-    //var result = processData(data);
-      console.log(data + "en main")
-    var result="georgina_result"
-    event.sender.send('actionReply', result)
+ipcMain.on('asynchronous-message', (event, arg) => {
+  console.log(arg)  // imprime "ping"
+  event.sender.send('asynchronous-reply', 'pong_async')
 })
+
+ipcMain.on('synchronous-message', (event, arg) => {
+  console.log(arg)  // imprime "ping"
+  event.returnValue = 'pong_sync'
+})
+
+ipcMain.on('invokeAction', function(event, data){
+  console.info("login data:" + data.name +"  " + data.password);
+  returnUserToken(event, data);
+})
+
+function returnUserToken(event, userData){
+  var userName=userData.name;
+  var pwd = userData.password;
+  pwd= crypto.createHash('md5').update(pwd).digest("hex");
+
+  var url="http://localhost:8080/eventfest/rest/users/connect";
+  url += "?login=" + userName;
+  url += "&pass=" + pwd;
+
+  var reqGet = http.request(url, function(res) {
+        console.log("statusCode: ", res.statusCode);
+          res.on('data', function(d) {
+              console.info('GET result:\n');
+              process.stdout.write(d);
+              event.sender.send('actionReply', d)
+          });
+      });
+  reqGet.end();
+  reqGet.on('error', function(e) {
+      console.error(e);
+  });
+}

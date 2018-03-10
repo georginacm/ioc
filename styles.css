@@ -27,11 +27,12 @@ button {
     padding: 14px 20px;
     margin: 8px 0;
     cursor: pointer;
-    color: #22a628;
-    border-color: #22a628;
+    color: white;
+    border-color: green;
     border: 10px;
+    /*border-style:solid;*/
     border-width: medium;
-    background-color: white;
+    background-color: #22a628;
     font-weight: bold;
 }
 
@@ -192,21 +193,21 @@ footer {
     position: absolute;
     top: 148px;
     z-index: 1;
-
     height: 100%;
-
     background: #eee;
 }
 
 .nav ul {
     padding: 10;
-
     list-style-type: none;
 }
 .nav ul a {
     text-decoration: none;
+    text-decoration-color: #4987ca;
+}
 
-    text-decoration-color: #074788;
+.nav .menu {
+  margin-top:15px;
 }
 
 @media all and (min-width: 768px) {
