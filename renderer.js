@@ -77,6 +77,7 @@ homeLogoutButton.addEventListener('click', function(){
       userLoggedName.innerHTML="";
       homeLogoutButton.style.visibility = "hidden";
       useremail.style.visibility = "hidden";
+      adminToolsMenu.style.visibility = "hidden";
 
       console.log(response + " render")
     })
