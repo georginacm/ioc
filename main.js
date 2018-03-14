@@ -2,81 +2,68 @@ const electron = require('electron')
 const crypto = require('crypto');
 const https = require('https');
 const http = require('http');
-
-// Module to control application life.
 const app = electron.app
-// Module to create native browser window.
+// Mòdul que crea el browser amb el que treballarem
 const BrowserWindow = electron.BrowserWindow
 const ipcMain = electron.ipcMain
-
 const path = require('path')
 const url = require('url')
 let appMenu = require("./scripts/menu")
 let loginUtils= require("./scripts/login")
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+
 let mainWindow
 
+  // Crea la finestra principal de l'aplicació i carrega el fitxer index.html
 function createWindow () {
-  // Create the browser window.
   mainWindow = new BrowserWindow({width: 850, height: 750})
-
-  // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }))
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
+  // Event que es llença al  tancar la finestra principal de l'aplicació
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null
   })
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+//  Quan s'acaba de carregar tota la app d'Electron es crea la finestra principal
 app.on('ready', createWindow)
 
-// Quit when all windows are closed.
+// Surt de l'app d'Elecron quan totes les fienestres de l'aplicació es tanquen
 app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
+// Si estem a l'app però no hi ha finestra principal, la creem
 app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow()
   }
 })
 
+//renderitzem el menú que està definit a scripts/menu.js ( en fase transitòria encara)
 appMenu.renderMenu();
 
 
-//Actions
+//---Accions on es subscriuran els mètodes del costat client del render.js que carreguem amb el index.html --
+
+// invoació del Login
 ipcMain.on('invokeLoginAction', function(event, data){
   console.info("login data:" + data.name +"  " + data.password);
   loginUtils.login(event, data);
 })
 
+// invoació del Signup
 ipcMain.on('invokeSignupAction', function(event, data){
   console.info("signup data:" + data.name +"  " + data.password + " admin: "+ data.admin);
   loginUtils.signup(event, data);
 })
 
+//invoació  del Logout
 ipcMain.on('invokeLogoutAction', function(event, data){
   console.info("logout data:" + data.name );
   loginUtils.logout(event, data);

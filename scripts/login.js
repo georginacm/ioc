@@ -1,14 +1,19 @@
 const crypto = require('crypto');
 const http = require('http');
 let token = null;
+let eventFestHost= "localhost";
+let eventFestPort ="8080";
+
+//Mòdul que fa les crides al servidor relacionades amb el login d'usuari (login, signup i logout)
+// i retorna a qui estigui subscrit al actionLoginReply, o actionSignupReply o actionLogoutReply ( els event onClick del render.js) el JSON amb els resultats del servidor
 
 module.exports = {
   login: function(event, userData) {
     var userName=userData.name;
     var pwd = userData.password;
-    pwd= crypto.createHash('md5').update(pwd).digest("hex");
+   pwd= crypto.createHash('md5').update(pwd).digest("hex");
 
-    var url="http://localhost:8080/eventfest/rest/users/connect";
+    var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/users/connect";
     url += "?login=" + userName;
     url += "&pass=" + pwd;
 
@@ -32,16 +37,14 @@ module.exports = {
     var pwd_signup = userData.password;
     pwd_signup= crypto.createHash('md5').update(pwd_signup).digest("hex");
 
-    var url="/eventfest/rest/users/create?token=";
-    url += token;
+    var url="/eventfest/rest/users/create";
 
    console.log("signupurl:"+ url);
     var user= {
       user_login:userData.name,
       user_pass: pwd_signup,
       user_email:userData.email,
-      user_role:rol,
-      user_token: token
+      user_role:rol
     };
     var jsonObject = JSON.stringify(user);
     console.log("signupdata: " + jsonObject);
@@ -51,8 +54,8 @@ module.exports = {
     };
 
     var optionsPost = {
-        host : 'localhost',
-        port : 8080,
+        host : eventFestHost,
+        port : eventFestPort,
         path : url,
         method : 'POST',
         headers : postheaders
@@ -78,7 +81,7 @@ module.exports = {
   logout: function(event, userData) {
     var userName=userData.name;
 
-    var url="http://localhost:8080/eventfest/rest/users/disconnect";
+    var url= "http://"+eventFestHost+":"+ eventFestPort+ "/eventfest/rest/users/disconnect";
     url += "?login=" + userName;
     url += "&token=" + token;
 

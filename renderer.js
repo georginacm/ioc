@@ -1,4 +1,4 @@
-// En el proceso de renderizado (página web).
+// JS que es carrega desde el index.html
   const {ipcRenderer} = require('electron')
   let username= document.getElementById('userName_home')
   let useremail = document.getElementById('userEmail_home')
@@ -11,7 +11,8 @@
   let adminToolsMenu = document.getElementById('adminTools')
   let userLoggedName = document.getElementById('userLoggedName');
 
-
+// al loginButton li assignem un listener que fa que envii una senyal al mètode del main.js (invokeLoginAction)
+//i se subscrigui als seus events de actionLoginReply
 loginButton.addEventListener('click', function(){
     var loginName= document.getElementById('login_username').value;
     var loginPassword= document.getElementById('login_password').value;
@@ -22,12 +23,11 @@ loginButton.addEventListener('click', function(){
       if(response.token){
         username.innerHTML= "Has accedit com a: "+ loginName;
         homeLoginButton.style.display="none";
-      //  homeSignupButton.style.visibility="hidden";
         homeLogoutButton.style.visibility = "visible";
         userLoggedName.style.visibility = "visible";
         userLoggedName.innerHTML=loginName;
 
-
+        //en cas de tenir rol administrador, es mostrarán unes opcions específiques del rol
         if(response.user_role== 0 || response.user_role== 1){
           adminToolsMenu.style.display = "block";
           document.getElementById('signup_admin').style.display="block"
@@ -45,7 +45,8 @@ loginButton.addEventListener('click', function(){
    ipcRenderer.send('invokeLoginAction', {name: loginName, password: loginPassword});
 });
 
-
+// al signupButton li assignem un listener que fa que envii una senyal al mètode del main.js (invokeSignupAction)
+//i se subscrigui als seus events de actionSignupReply
 signupButton.addEventListener('click', function(){
     var signupEmail= document.getElementById('signup_email').value;
     var signupName= document.getElementById('signup_username').value;
@@ -65,7 +66,8 @@ signupButton.addEventListener('click', function(){
 });
 
 
-
+// al logoutButton li assignem un listener que fa que envii una senyal al mètode del main.js (invokeLogoutAction)
+//i se subscrigui als seus events de actionLogoutReply
 homeLogoutButton.addEventListener('click', function(){
     var loginName= document.getElementById('login_username').value;
 
@@ -77,7 +79,8 @@ homeLogoutButton.addEventListener('click', function(){
       userLoggedName.innerHTML="";
       homeLogoutButton.style.visibility = "hidden";
       useremail.style.visibility = "hidden";
-      adminToolsMenu.style.visibility = "hidden";
+    //  adminToolsMenu.style.visibility = "hidden";
+      adminToolsMenu.style.display = "none";
 
       console.log(response + " render")
     })
