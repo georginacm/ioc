@@ -1,5 +1,6 @@
-
+const ipc = require('electron').ipcRenderer
 const { Menu} = require('electron')
+const BrowserWindow = require('electron').BrowserWindow
 
 module.exports = {
   renderMenu: function() {
@@ -26,7 +27,7 @@ module.exports = {
         label: 'Contacte',
         submenu: [
           {
-            label: 'Learn More',
+            label: 'Contacte ioc',
             click () {openAboutWindow();}
           }
         ]
