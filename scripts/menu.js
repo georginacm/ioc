@@ -27,7 +27,7 @@ module.exports = {
         submenu: [
           {
             label: 'Learn More',
-            click () { require('electron').shell.openExternal('https://ioc.xtec.cat') }
+            click () {openAboutWindow();}
           }
         ]
       }
@@ -47,6 +47,31 @@ module.exports = {
 
       const menu = Menu.buildFromTemplate(template)
       Menu.setApplicationMenu(menu)
+
+      var newWindow = null;
+
+      function openAboutWindow() {
+         if (newWindow) {
+          newWindow.focus()
+          return;
+        }
+
+        newWindow = new BrowserWindow({
+         height: 185,
+         resizable: false,
+         width: 270,
+         title: "",
+         minimizable: false,
+         fullscreenable: false
+        });
+
+        newWindow.loadURL('file://' + __dirname + 'templates/contacte.html');
+
+         newWindow.on('closed', function () {
+         newWindow = null;
+        });
+      }
+
     }
 
-  }
+}

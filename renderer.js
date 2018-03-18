@@ -9,6 +9,7 @@
   let homeSignupButton = document.getElementById('home_signupbutton')
   let signupButton = document.getElementById('signupbutton')
   let adminToolsMenu = document.getElementById('adminTools')
+  let editEventMenu = document.getElementById('editEvent')
   let userLoggedName = document.getElementById('userLoggedName');
 
 // al loginButton li assignem un listener que fa que envii una senyal al mètode del main.js (invokeLoginAction)
@@ -86,4 +87,10 @@ homeLogoutButton.addEventListener('click', function(){
     })
 
    ipcRenderer.send('invokeLogoutAction', {name: loginName});
+});
+
+
+editEvent.addEventListener('click', function(){
+      console.log("editEventClieck")
+   ipcRenderer.send('invokeEditEventAction', "");
 });

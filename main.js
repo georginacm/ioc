@@ -13,9 +13,10 @@ let loginUtils= require("./scripts/login")
 
 
 let mainWindow
+let childWindow
 
   // Crea la finestra principal de l'aplicació i carrega el fitxer index.html
-function createWindow () {
+function createMainWindow () {
   mainWindow = new BrowserWindow({width: 850, height: 750})
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -26,10 +27,28 @@ function createWindow () {
   mainWindow.on('closed', function () {
     mainWindow = null
   })
+
+  createChildWindow();
+}
+
+function createChildWindow(){
+  childWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true })
+  childWindow.setAlwaysOnTop(true);
+  childWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'templates/editEvent.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  childWindow.on('close', function (event) {
+    console.log("close childWindow");
+    childWindow.hide();
+    event.preventDefault();
+  })
 }
 
 //  Quan s'acaba de carregar tota la app d'Electron es crea la finestra principal
-app.on('ready', createWindow)
+app.on('ready', createMainWindow)
 
 // Surt de l'app d'Elecron quan totes les fienestres de l'aplicació es tanquen
 app.on('window-all-closed', function () {
@@ -41,7 +60,7 @@ app.on('window-all-closed', function () {
 // Si estem a l'app però no hi ha finestra principal, la creem
 app.on('activate', function () {
   if (mainWindow === null) {
-    createWindow()
+    createMainWindow()
   }
 })
 
@@ -67,4 +86,13 @@ ipcMain.on('invokeSignupAction', function(event, data){
 ipcMain.on('invokeLogoutAction', function(event, data){
   console.info("logout data:" + data.name );
   loginUtils.logout(event, data);
+})
+
+
+ipcMain.on('invokeEditEventAction', function(event, data){
+  console.log("childWindow"+ childWindow)
+  if (childWindow === null) {
+    createChildWindow()
+  }
+  childWindow.show()
 })
