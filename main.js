@@ -13,7 +13,7 @@ let loginUtils= require("./scripts/login")
 
 
 let mainWindow
-let childWindow
+let EditWindow
 
   // Crea la finestra principal de l'aplicació i carrega el fitxer index.html
 function createMainWindow () {
@@ -28,21 +28,21 @@ function createMainWindow () {
     mainWindow = null
   })
 
-  createChildWindow();
+  createEditWindow();
 }
 
-function createChildWindow(){
-  childWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true })
-  childWindow.setAlwaysOnTop(true);
-  childWindow.loadURL(url.format({
+function createEditWindow(){
+  EditWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true })
+  EditWindow.setAlwaysOnTop(true);
+  EditWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'templates/editEvent.html'),
     protocol: 'file:',
     slashes: true
   }))
 
-  childWindow.on('close', function (event) {
-    console.log("close childWindow");
-    childWindow.hide();
+  EditWindow.on('close', function (event) {
+    console.log("close EditWindow");
+    EditWindow.hide();
     event.preventDefault();
   })
 }
@@ -90,9 +90,9 @@ ipcMain.on('invokeLogoutAction', function(event, data){
 
 
 ipcMain.on('invokeEditEventAction', function(event, data){
-  console.log("childWindow"+ childWindow)
-  if (childWindow === null) {
-    createChildWindow()
+  console.log("EditWindow"+ EditWindow)
+  if (EditWindow === null) {
+    createEditWindow()
   }
-  childWindow.show()
+  EditWindow.show()
 })

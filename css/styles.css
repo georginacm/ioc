@@ -167,15 +167,13 @@ span.psw {
 
 
 .article {
-    position: absolute;
+  /*  position: absolute;*/
     top: 148px;
     right: 0;
     bottom: 20px;
     left: 200px;
-
     text-align: left;
 
-    /*background-color: grey;*/
 }
 
 header {
@@ -184,12 +182,11 @@ header {
     background: #4987ca;
 }
 footer {
-    position: absolute;
+    /*position: absolute;*/
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 2;
-
+  /*  z-index: 2;*/
     color: white;
     background: #4987ca;
 }
@@ -220,8 +217,7 @@ footer {
   color: red;
   text-decoration-color: red;
 }
-
-@media all and (min-width: 768px) {
+/*@media all and (min-width: 768px) {
     .nav {
         text-align: left;
 
@@ -240,4 +236,20 @@ footer {
         -webkit-order: 3;
                 order: 3;
     }
+}*/
+
+.article table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.article td, th {
+    border: 1px solid #93c1f3;
+    text-align: left;
+    padding: 8px;
+}
+
+.article tr:nth-child(even) {
+    background-color: #93c1f3;
 }
