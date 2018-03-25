@@ -96,3 +96,9 @@ ipcMain.on('invokeEditEventAction', function(event, data){
   }
   EditWindow.show()
 })
+
+//invoació  del Logout
+ipcMain.on('invokeCreateEventAction', function(event, data){
+  console.info("create event data:" + data.nom );
+  loginUtils.create(event, data);
+})

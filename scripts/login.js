@@ -100,5 +100,68 @@ module.exports = {
     reqGet.on('error', function(e) {
         console.error(e);
     });
+  },
+
+  create:  function(event, eventData) {
+
+    var url="/eventfest/rest/events/create";
+        url += "?token=" + token;
+   console.log("createurl:"+ url);
+
+
+    var createData= {
+       nom : eventData.nom,
+       datainici : eventData.datainici,
+       datafi : eventData.datafi,
+       tipus : eventData.tipus,
+       descripcio : eventData.descripcio,
+       direccio : eventData.direccio,
+       municipi : eventData.municipi
+     };
+
+
+    var jsonObject = JSON.stringify(createData);
+    console.log("createdata: " + jsonObject);
+    var postheaders = {
+        'Content-Type' : 'application/json',
+        'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
+    };
+
+    var optionsPost = {
+        host : eventFestHost,
+        port : eventFestPort,
+        path : url,
+        method : 'POST',
+        headers : postheaders
+    };
+
+//temporal
+  event.sender.send('actionCreateEventReply', {missatge: 'success'})
+/*
+    var reqPost = http.request(optionsPost, function(res) {
+        console.log("statusCode: ", res.statusCode);
+        res.on('data', function(response) {
+            console.info('POST result:\n');
+            process.stdout.write(response);
+            console.info('\n\nPOST completed');
+            event.sender.send('actionCreateEventReply', response)
+        });
+    });
+
+    reqPost.write(jsonObject);
+    reqPost.end();
+    reqPost.on('error', function(e) {
+        console.error(e);
+    });
+    */
+  },
+
+  update: function(event, userData){
+
+  },
+
+  delete: function(event, userData){
+
   }
+
 }
