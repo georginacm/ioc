@@ -182,7 +182,7 @@ header {
     background: #4987ca;
 }
 footer {
-    /*position: absolute;*/
+    position: absolute;
     right: 0;
     bottom: 0;
     left: 0;

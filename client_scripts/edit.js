@@ -6,6 +6,7 @@ let tipusevent= document.getElementById('tipusevent')
 let descripcio= document.getElementById('descripcio')
 let direccioCompleta= document.getElementById('pac-input')
 let municipi= document.getElementById('locality')
+let eventid = document.getElementById('event_id')
 let eventCreateButton = document.getElementById('save_event')
 let eventDeleteButton = document.getElementById('delete_event')
 let createResult = document.getElementById('create_result')
@@ -33,4 +34,19 @@ eventCreateButton.addEventListener('click', function(){
     })
 
    ipcRenderer.send('invokeCreateEventAction', createData );
+});
+
+eventDeleteButton.addEventListener('click', function(){
+    var deleteData= {id: eventid.innerText};
+    var jsonData = JSON.stringify(deleteData);
+    console.log(jsonData);
+
+    ipcRenderer.once('actionDeleteEventReply', function(event, response){
+      console.log(response.missatge);
+      //var resposta=  JSON.parse(response);
+      createResult.innerHTML = response.missatge.toString();
+      console.log(response + " render")
+    })
+
+   ipcRenderer.send('invokeDeleteEventAction', deleteData );
 });

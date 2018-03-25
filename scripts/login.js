@@ -160,8 +160,29 @@ module.exports = {
 
   },
 
-  delete: function(event, userData){
+  delete: function(event, eventData){
+    var eventId=eventData.id;
 
+    var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/delete";
+    url += "?token=" + token;
+    url += "&idevent=" + eventId;
+    console.log("deleteurl:"+ url);
+
+    //temporal
+    event.sender.send('actionDeleteEventReply', {missatge: 'success'})
+/*
+    var reqGet = http.request(url, function(res) {
+          console.log("statusCode: ", res.statusCode);
+            res.on('data', function(eventDataResult) {
+                var eventResult=  JSON.parse(eventDataResult);
+                event.sender.send('actionDeleteEventReply', eventResult)
+            });
+        });
+    reqGet.end();
+    reqGet.on('error', function(e) {
+        console.error(e);
+    });
+    */
   }
 
 }
