@@ -156,7 +156,7 @@ module.exports = {
     */
   },
 
-  update: function(event, userData){
+  update: function(event, eventData){
 
   },
 
@@ -170,6 +170,27 @@ module.exports = {
 
     //temporal
     event.sender.send('actionDeleteEventReply', {missatge: 'success'})
+/*
+    var reqGet = http.request(url, function(res) {
+          console.log("statusCode: ", res.statusCode);
+            res.on('data', function(eventDataResult) {
+                var eventResult=  JSON.parse(eventDataResult);
+                event.sender.send('actionDeleteEventReply', eventResult)
+            });
+        });
+    reqGet.end();
+    reqGet.on('error', function(e) {
+        console.error(e);
+    });
+    */
+  },
+  getByFilter: function(event, eventFilterData){
+    var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/getByFilter";
+    url += "?token=" + token;
+    console.log("get events eurl:"+ url);
+
+    //temporal
+    event.sender.send('actionGetByFilterEventReply', {missatge: 'success'}) //todo retornar un array amb tots el events
 /*
     var reqGet = http.request(url, function(res) {
           console.log("statusCode: ", res.statusCode);
