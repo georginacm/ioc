@@ -110,22 +110,23 @@ module.exports = {
 
 
     var createData= {
-       nom : eventData.nom,
-       datainici : eventData.datainici,
-       datafi : eventData.datafi,
-       tipus : eventData.tipus,
-       descripcio : eventData.descripcio,
-       direccio : eventData.direccio,
-       municipi : eventData.municipi
+       event_title : eventData.nom,
+       event_startDate : eventData.datainici,
+       event_finishDate : eventData.datafi,
+       event_type : eventData.tipus,
+       event_description : eventData.descripcio,
+       event_address : eventData.direccio,
+       users_id: 1
+       //municipi : eventData.municipi
      };
 
 
     var jsonObject = JSON.stringify(createData);
     console.log("createdata: " + jsonObject);
     var postheaders = {
-        'Content-Type' : 'application/json',
+        'Content-Type' : 'application/json; charset=utf-8',
         'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
-    };
+          };
 
     var optionsPost = {
         host : eventFestHost,
@@ -136,8 +137,8 @@ module.exports = {
     };
 
 //temporal
-  event.sender.send('actionCreateEventReply', {missatge: 'success'})
-/*
+  //event.sender.send('actionCreateEventReply', {missatge: 'success'})
+
     var reqPost = http.request(optionsPost, function(res) {
         console.log("statusCode: ", res.statusCode);
         res.on('data', function(response) {
@@ -153,7 +154,7 @@ module.exports = {
     reqPost.on('error', function(e) {
         console.error(e);
     });
-    */
+
   },
 
   update: function(event, eventData){
