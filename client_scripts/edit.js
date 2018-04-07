@@ -11,15 +11,36 @@ let eventCreateButton = document.getElementById('save_event')
 let eventDeleteButton = document.getElementById('delete_event')
 let createResult = document.getElementById('create_result')
 
-init();
+ipcRenderer.on('store-data', function(event, eventAEditar){
+    console.info(JSON.stringify(eventAEditar));
+    eventNom.value =eventAEditar.event_title;
+    datainici.value = eventAEditar.event_startDate;
+    datafi.value = eventAEditar.event_finishDate;
+    tipusevent.value = eventAEditar.event_type;
+    descripcio.value = eventAEditar.event_description;
+    direccioCompleta.value = eventAEditar.event_address;
+    municipi.value = eventAEditar.event_city;
+    eventid.innerHTML= eventAEditar.id;
 
-function init(){
-  ipcRenderer.on('store-data', function(resultat){
-    console.log("response:"+ JSON.stringify(resultat));
-    createResult.innerHTML = resultat;
-    console.log(resultat + " render")
-  })
-};
+    document.getElementById('pac-input').focus();
+    document.getElementById('pac-input').value= eventAEditar.event_address;
+    document.getElementById('pac-input').innerHTML= eventAEditar.event_address;
+    document.getElementById('pac-input').blur();
+
+
+});
+
+  window.onunload = function(){
+    eventNom.value ="";
+    datainici.value = "";
+    datafi.value = "";
+    tipusevent.value = "";
+    descripcio.value = "";
+    direccioCompleta.value = "";
+    municipi.value = "";
+    eventid.innerHTML= "";
+  };
+
 
 eventCreateButton.addEventListener('click', function(){
     var createData= {

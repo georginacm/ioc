@@ -31,9 +31,8 @@
         cellType.innerHTML = response[item].event_type;
         cellId.innerHTML = response[item].id;
 
-        row.addEventListener('click', function(){
-          console.log("editEventClick")
-          ipcRenderer.send('invokeEditEventAction', {id: response[item].id});
+        cellId.addEventListener('click', function(){
+          ipcRenderer.send('invokeEditEventAction', {id: this.innerHTML});
         });
       }
     })
@@ -56,14 +55,17 @@ loginButton.addEventListener('click', function(){
         homeLogoutButton.style.visibility = "visible";
         userLoggedName.style.visibility = "visible";
         userLoggedName.innerHTML=loginName;
+        tableEvents.style.visibility = "visible";
 
         //en cas de tenir rol administrador, es mostrarán unes opcions específiques del rol
         if(response.user_role== 0 || response.user_role== 1){
           adminToolsMenu.style.display = "block";
+          editEventMenu.style.display = "block";
           document.getElementById('signup_admin').style.display="block"
           document.getElementById('signup_admin_label').style.display="block"
         }else{
           adminToolsMenu.style.display = "none";
+          editEventMenu.style.display = "none";
           document.getElementById('signup_admin').style.display="none"
           document.getElementById('signup_admin_label').style.display="none"
         }
@@ -109,10 +111,9 @@ homeLogoutButton.addEventListener('click', function(){
       userLoggedName.innerHTML="";
       homeLogoutButton.style.visibility = "hidden";
       useremail.style.visibility = "hidden";
-    //  adminToolsMenu.style.visibility = "hidden";
       adminToolsMenu.style.display = "none";
-
-      console.log(response + " render")
+      editEventMenu.style.display = "none";
+      tableEvents.style.visibility = "hidden";
     })
 
    ipcRenderer.send('invokeLogoutAction', {name: loginName});

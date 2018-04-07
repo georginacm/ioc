@@ -213,7 +213,7 @@ footer {
   display: inline-block;
 }
 
-#adminTools a {
+.admin a {
   color: red;
   text-decoration-color: red;
 }

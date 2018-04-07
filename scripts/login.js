@@ -210,7 +210,6 @@ module.exports = {
       var resultat =  events.filter(function(item) {
   	     return item.id == id;
       });
-      console.log("resultat:" + JSON.stringify(resultat[0]));
       return resultat[0];
       //event.sender.send('actionGetEventbyIdReply', resultat[0]);
     }else{
