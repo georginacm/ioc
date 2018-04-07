@@ -1,8 +1,10 @@
 const crypto = require('crypto');
 const http = require('http');
 let token = null;
+let user_id=null;
 let eventFestHost= "localhost";
 let eventFestPort ="8080";
+let events=[];
 
 //Mòdul que fa les crides al servidor relacionades amb el login d'usuari (login, signup i logout)
 // i retorna a qui estigui subscrit al actionLoginReply, o actionSignupReply o actionLogoutReply ( els event onClick del render.js) el JSON amb els resultats del servidor
@@ -23,6 +25,7 @@ module.exports = {
                 var user=  JSON.parse(userDataResult);
                 token= user.token;
                 console.log("token " +token);
+                console.log("afeterlogin: "+ userDataResult);
                 event.sender.send('actionLoginReply', user)
             });
         });
@@ -108,7 +111,6 @@ module.exports = {
         url += "?token=" + token;
    console.log("createurl:"+ url);
 
-
     var createData= {
        event_title : eventData.nom,
        event_startDate : eventData.datainici,
@@ -116,10 +118,9 @@ module.exports = {
        event_type : eventData.tipus,
        event_description : eventData.descripcio,
        event_address : eventData.direccio,
-       users_id: 1
-       //municipi : eventData.municipi
+       users_id: 1,
+       event_city : eventData.municipi
      };
-
 
     var jsonObject = JSON.stringify(createData);
     console.log("createdata: " + jsonObject);
@@ -135,9 +136,6 @@ module.exports = {
         method : 'POST',
         headers : postheaders
     };
-
-//temporal
-  //event.sender.send('actionCreateEventReply', {missatge: 'success'})
 
     var reqPost = http.request(optionsPost, function(res) {
         console.log("statusCode: ", res.statusCode);
@@ -188,23 +186,35 @@ module.exports = {
   getByFilter: function(event, eventFilterData){
     var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/getByFilter";
     url += "?token=" + token;
-    console.log("get events eurl:"+ url);
+    url += "&nom=qualsevol nom&data=qualsevol data&municipi=qualsevol municipi";
 
-    //temporal
-    event.sender.send('actionGetByFilterEventReply', {missatge: 'success'}) //todo retornar un array amb tots el events
-/*
     var reqGet = http.request(url, function(res) {
           console.log("statusCode: ", res.statusCode);
             res.on('data', function(eventDataResult) {
+                  console.log("getByFilter response:"+ eventDataResult);
                 var eventResult=  JSON.parse(eventDataResult);
-                event.sender.send('actionDeleteEventReply', eventResult)
+                events=eventResult;
+                event.sender.send('actionGetByFilterEventReply', eventResult);
             });
         });
     reqGet.end();
     reqGet.on('error', function(e) {
         console.error(e);
     });
-    */
-  }
 
+  },
+
+
+  getEventbyId: function(event, id){
+    if(events!=null){
+      var resultat =  events.filter(function(item) {
+  	     return item.id == id;
+      });
+      console.log("resultat:" + JSON.stringify(resultat[0]));
+      return resultat[0];
+      //event.sender.send('actionGetEventbyIdReply', resultat[0]);
+    }else{
+    //  event.sender.send('actionGetEventbyIdReply', {missatge: "event no trobat"});
+    }
+  }
 }

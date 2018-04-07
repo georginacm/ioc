@@ -11,6 +11,15 @@ let eventCreateButton = document.getElementById('save_event')
 let eventDeleteButton = document.getElementById('delete_event')
 let createResult = document.getElementById('create_result')
 
+init();
+
+function init(){
+  ipcRenderer.on('store-data', function(resultat){
+    console.log("response:"+ JSON.stringify(resultat));
+    createResult.innerHTML = resultat;
+    console.log(resultat + " render")
+  })
+};
 
 eventCreateButton.addEventListener('click', function(){
     var createData= {

@@ -90,11 +90,21 @@ ipcMain.on('invokeLogoutAction', function(event, data){
 
 
 ipcMain.on('invokeEditEventAction', function(event, data){
-  console.log("EditWindow"+ EditWindow)
-  if (EditWindow === null) {
-    createEditWindow()
+  console.log("EditWindow data:"+ data)
+  try{
+    if (EditWindow === null) {
+      createEditWindow()
+    }
+    if(data.id!=null){
+      var resultat=  loginUtils.getEventbyId(event,data.id);
+      console.log("resultat main:" + JSON.stringify(resultat));
+      EditWindow.webContents.send('store-data', resultat);
+    }
+
+    EditWindow.show();
+  }catch(error){
+    console.error(error);
   }
-  EditWindow.show()
 })
 
 //invocació  del Create Event
@@ -107,4 +117,10 @@ ipcMain.on('invokeCreateEventAction', function(event, data){
 ipcMain.on('invokeDeleteEventAction', function(event, data){
   console.info("delete event data:" + data.id );
   loginUtils.delete(event, data);
+})
+
+//invocació  del GetByFilter Event
+ipcMain.on('invokeGetEventsAction', function(event, data){
+  console.info("invokeGetEventsAction" );
+  loginUtils.getByFilter(event, data);
 })

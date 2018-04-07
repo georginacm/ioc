@@ -11,6 +11,35 @@
   let adminToolsMenu = document.getElementById('adminTools')
   let editEventMenu = document.getElementById('editEvent')
   let userLoggedName = document.getElementById('userLoggedName');
+  let tableEvents= document.getElementById('tableevents');
+
+  function fillTableEvents(){
+    ipcRenderer.once('actionGetByFilterEventReply', function(event, response){
+      console.log(response);
+     for (var item in response) {
+        var row = tableEvents.insertRow(1);
+        var cellTitol = row.insertCell(0);
+        var cellCity = row.insertCell(1);
+        var cellStart = row.insertCell(2);
+        var cellFinish = row.insertCell(3);
+        var cellType= row.insertCell(4);
+        var cellId= row.insertCell(5);
+        cellTitol.innerHTML = response[item].event_title;
+        cellCity.innerHTML = response[item].event_city;
+        cellStart.innerHTML = response[item].event_startDate;
+        cellFinish.innerHTML = response[item].event_finishDate;
+        cellType.innerHTML = response[item].event_type;
+        cellId.innerHTML = response[item].id;
+
+        row.addEventListener('click', function(){
+          console.log("editEventClick")
+          ipcRenderer.send('invokeEditEventAction', {id: response[item].id});
+        });
+      }
+    })
+
+   ipcRenderer.send('invokeGetEventsAction', {});
+  };
 
 // al loginButton li assignem un listener que fa que envii una senyal al mètode del main.js (invokeLoginAction)
 //i se subscrigui als seus events de actionLoginReply
@@ -39,7 +68,7 @@ loginButton.addEventListener('click', function(){
           document.getElementById('signup_admin_label').style.display="none"
         }
       }
-
+      fillTableEvents();
       console.log(response + " render")
     })
 
@@ -91,6 +120,6 @@ homeLogoutButton.addEventListener('click', function(){
 
 
 editEvent.addEventListener('click', function(){
-      console.log("editEventClieck")
+      console.log("editEventClick")
    ipcRenderer.send('invokeEditEventAction', "");
 });
