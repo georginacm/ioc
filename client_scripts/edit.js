@@ -58,7 +58,8 @@ eventCreateButton.addEventListener('click', function(){
        tipus : tipusevent.value,
        descripcio :descripcio.value,
        direccio : direccioCompleta.value,
-       municipi : municipi.value
+       municipi : municipi.value,
+       id: eventid.innerHTML
      };
 
     var jsonData = JSON.stringify(createData);
@@ -71,7 +72,7 @@ eventCreateButton.addEventListener('click', function(){
       clear();
     })
 
-   ipcRenderer.send('invokeCreateEventAction', createData );
+    ipcRenderer.send('invokeCreateEventAction', createData );
 });
 
 eventDeleteButton.addEventListener('click', function(){

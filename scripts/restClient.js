@@ -156,7 +156,60 @@ module.exports = {
   },
 
   update: function(event, eventData){
+    var eventId=eventData.id;
+    var url="/eventfest/rest/events/update";
+        url += "?token=" + token;
+        url += "&id=" + eventId;
+   console.log("updateurl:"+ url);
 
+    var createData= {
+       event_title : eventData.nom,
+       event_startDate : eventData.datainici,
+       event_finishDate : eventData.datafi,
+       event_type : eventData.tipus,
+       event_description : eventData.descripcio,
+       event_address : eventData.direccio,
+       users_id: 1,
+       event_city : eventData.municipi
+     };
+
+    var jsonObject = JSON.stringify(createData);
+    console.log("createdata: " + jsonObject);
+    var postheaders = {
+        'Content-Type' : 'application/json; charset=utf-8',
+        'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
+          };
+
+    var optionsPut = {
+        host : eventFestHost,
+        port : eventFestPort,
+        path : url,
+        method : 'PUT',
+        headers : postheaders
+    };
+
+    var reqPut = http.request(optionsPut, function(res) {
+        console.log("statusCode: ", res.statusCode);
+        res.on('data', function(response) {
+            process.stdout.write(response); // escriu a la consola
+            var eventResposta= JSON.parse(response);
+            var resposta="";
+            process.stdout.write("id:"+ eventResposta.id);
+            if(eventResposta.id!=undefined){
+             resposta=JSON.stringify({missatge: "Event modificat correctament"});
+            }else{
+              resposta=response;
+            }
+            event.sender.send('actionCreateEventReply', resposta);
+        });
+    });
+
+    reqPut.write(jsonObject);
+    reqPut.end();
+    reqPut.on('error', function(e) {
+      event.sender.send('actionCreateEventReply', JSON.stringify({missatge: "Error modificant l'event"}));
+      console.error(e);
+    });
   },
 
   delete: function(event, eventData){

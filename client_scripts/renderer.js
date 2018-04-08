@@ -13,6 +13,7 @@
   let userLoggedName = document.getElementById('userLoggedName');
   let tableEvents= document.getElementById('tableevents');
   let tableEventsToEdit= document.getElementById('tableevents_toEdit');
+  let refreshButton = document.getElementById('refresh_button')
   tableEventsToEdit.style.display = "none";
   tableEvents.style.display = "none";
 
@@ -77,7 +78,16 @@
 adminToolsMenu.addEventListener('click', function(){
 /*  tableEvents.style.visibility = "hidden";
   tableEventsToEdit.style.visibility = "visible";*/
-  tableEventsToEdit.style.display = "block";
+  tableEventsToEdit.style.display = "";
+  tableEvents.style.display = "none";
+  refreshButton.style.visibility="visible"
+  fillTableEventsToEdit();
+});
+
+refreshButton.addEventListener('click', function(){
+/*  tableEvents.style.visibility = "hidden";
+  tableEventsToEdit.style.visibility = "visible";*/
+  tableEventsToEdit.style.display = "";
   tableEvents.style.display = "none";
   fillTableEventsToEdit();
 });
@@ -88,10 +98,10 @@ loginButton.addEventListener('click', function(){
     var loginName= document.getElementById('login_username').value;
     var loginPassword= document.getElementById('login_password').value;
     ipcRenderer.once('actionLoginReply', function(event, response){
-    role.innerHTML = response.missatge.toString();
+  //  role.innerHTML = response.missatge.toString();
 
       if(response.token){
-        username.innerHTML= "Has accedit com a: "+ loginName;
+        //username.innerHTML= "Has accedit com a: "+ loginName;
         homeLoginButton.style.display="none";
         homeLogoutButton.style.visibility = "visible";
         userLoggedName.style.visibility = "visible";
@@ -100,7 +110,8 @@ loginButton.addEventListener('click', function(){
         tableEventsToEdit.style.visibility = "hidden";*/
 
         tableEventsToEdit.style.display = "none";
-        tableEvents.style.display = "block";
+        refreshButton.style.visibility="hidden"
+        tableEvents.style.display = "";
 
         //en cas de tenir rol administrador, es mostrarán unes opcions específiques del rol
         if(response.user_role== 0 || response.user_role== 1){
@@ -159,6 +170,7 @@ homeLogoutButton.addEventListener('click', function(){
       editEventMenu.style.display = "none";
       tableEvents.style.display = "none";
       tableEventsToEdit.style.display = "none";
+      refreshButton.style.visibility="hidden";
       clearTable(tableEvents);
       clearTable(tableEventsToEdit);
     })

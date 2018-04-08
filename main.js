@@ -9,7 +9,7 @@ const ipcMain = electron.ipcMain
 const path = require('path')
 const url = require('url')
 let appMenu = require("./scripts/menu")
-let loginUtils= require("./scripts/login")
+let service= require("./scripts/restClient")
 
 
 let mainWindow
@@ -73,19 +73,19 @@ appMenu.renderMenu();
 // invoació del Login
 ipcMain.on('invokeLoginAction', function(event, data){
   console.info("login data:" + data.name +"  " + data.password);
-  loginUtils.login(event, data);
+  service.login(event, data);
 })
 
 // invoació del Signup
 ipcMain.on('invokeSignupAction', function(event, data){
   console.info("signup data:" + data.name +"  " + data.password + " admin: "+ data.admin);
-  loginUtils.signup(event, data);
+  service.signup(event, data);
 })
 
 //invoació  del Logout
 ipcMain.on('invokeLogoutAction', function(event, data){
   console.info("logout data:" + data.name );
-  loginUtils.logout(event, data);
+  service.logout(event, data);
 })
 
 
@@ -97,7 +97,7 @@ ipcMain.on('invokeEditEventAction', function(event, data){
     }
     var resultat=null;
     if(data.id!=null){
-      resultat=  loginUtils.getEventbyId(event,data.id);
+      resultat=  service.getEventbyId(event,data.id);
       console.log("resultat main:" + JSON.stringify(resultat));
     }
     EditWindow.webContents.send('store-data', resultat);
@@ -110,22 +110,27 @@ ipcMain.on('invokeEditEventAction', function(event, data){
 //invocació  del Create Event
 ipcMain.on('invokeCreateEventAction', function(event, data){
   console.info("create event data:" + data.nom );
-  loginUtils.create(event, data);
+  console.info("create event data id:" + data.id );
+  if(data.id){
+    service.update(event, data);
+  }else{
+    service.create(event, data);
+  }
 })
 
 //invocació  del Delete Event
 ipcMain.on('invokeDeleteEventAction', function(event, data){
   console.info("delete event data:" + data.id );
-  loginUtils.delete(event, data);
+  service.delete(event, data);
 })
 
 //invocació  del GetByFilter Event
 ipcMain.on('invokeGetEventsAction', function(event, data){
   console.info("invokeGetEventsAction" );
-  loginUtils.getByFilter(event, data, false);
+  service.getByFilter(event, data, false);
 })
 
 ipcMain.on('invokeGetEventsToEditAction', function(event, data){
   console.info("invokeGetEventsToEditAction" );
-  loginUtils.getByFilter(event, data, true);
+  service.getByFilter(event, data, true);
 })
