@@ -65,22 +65,22 @@ eventCreateButton.addEventListener('click', function(){
     console.log(jsonData);
 
     ipcRenderer.once('actionCreateEventReply', function(event, response){
-      console.log(response.missatge);
-      //var resposta=  JSON.parse(response);
-      createResult.innerHTML = response.missatge.toString();
+      var resposta=  JSON.parse(response);
+      console.log(resposta.missatge);
+      alert(resposta.missatge);
       clear();
-      alert(response.missatge.toString());
-      console.log(response + " render")
     })
 
    ipcRenderer.send('invokeCreateEventAction', createData );
 });
 
 eventDeleteButton.addEventListener('click', function(){
+  console.log("event a eliminar: "+ eventid.innerHTML);
     ipcRenderer.once('actionDeleteEventReply', function(event, response){
       console.log(response.missatge);
-      createResult.innerHTML = response.missatge.toString();
+      alert(response.missatge);
+      clear();
     })
 
-   ipcRenderer.send('invokeDeleteEventAction', {id: eventid.innerText} );
+   ipcRenderer.send('invokeDeleteEventAction', {id: eventid.innerHTML} );
 });
