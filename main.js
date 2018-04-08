@@ -130,6 +130,7 @@ ipcMain.on('invokeGetEventsAction', function(event, data){
   service.getByFilter(event, data, false);
 })
 
+//invocació del GetEvents que ens servirà per omplir la taula amb l'opció d'edició d'events
 ipcMain.on('invokeGetEventsToEditAction', function(event, data){
   console.info("invokeGetEventsToEditAction" );
   service.getByFilter(event, data, true);

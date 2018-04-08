@@ -11,7 +11,8 @@ let eventCreateButton = document.getElementById('save_event')
 let eventDeleteButton = document.getElementById('delete_event')
 let createResult = document.getElementById('create_result')
 
-
+//Al accedir a la pantalla d'Edició, estem subscrits a les dades d'un event, que utilitzarem per omplir els camps. En cas que anem a editar
+//Si no rebem dades d'event vol dir que no estem editant cap event, i entrem en mode creació
 ipcRenderer.on('store-data', function(event, eventAEditar){
   if(eventAEditar!=null){
     console.info(JSON.stringify(eventAEditar));

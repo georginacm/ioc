@@ -17,6 +17,7 @@
   tableEventsToEdit.style.display = "none";
   tableEvents.style.display = "none";
 
+//Funció que omple la taula d'events i permet editar-los
   function fillTableEventsToEdit(){
     ipcRenderer.on('actionGetByFilterEventToEditReply', function(event, response){
       clearTable(tableEventsToEdit);
@@ -50,6 +51,7 @@
    ipcRenderer.send('invokeGetEventsToEditAction', {});
   };
 
+//Funció que omple la taula d'events
   function fillTableEvents(){
     ipcRenderer.on('actionGetByFilterEventReply', function(event, response){
       clearTable(tableEvents);
@@ -75,18 +77,16 @@
    ipcRenderer.send('invokeGetEventsAction', {});
   };
 
+//Al botó d'administració li assignem un Listener que ens porta a la pantalla per a poder editar els events
 adminToolsMenu.addEventListener('click', function(){
-/*  tableEvents.style.visibility = "hidden";
-  tableEventsToEdit.style.visibility = "visible";*/
   tableEventsToEdit.style.display = "";
   tableEvents.style.display = "none";
   refreshButton.style.visibility="visible"
   fillTableEventsToEdit();
 });
 
+//Botó que permet actualitzar les dades de la taula que mostra els events
 refreshButton.addEventListener('click', function(){
-/*  tableEvents.style.visibility = "hidden";
-  tableEventsToEdit.style.visibility = "visible";*/
   tableEventsToEdit.style.display = "";
   tableEvents.style.display = "none";
   fillTableEventsToEdit();
@@ -98,16 +98,13 @@ loginButton.addEventListener('click', function(){
     var loginName= document.getElementById('login_username').value;
     var loginPassword= document.getElementById('login_password').value;
     ipcRenderer.once('actionLoginReply', function(event, response){
-  //  role.innerHTML = response.missatge.toString();
 
       if(response.token){
-        //username.innerHTML= "Has accedit com a: "+ loginName;
+        username.style.visibility="hidden"; //"Has accedit com a: "+ loginName;
         homeLoginButton.style.display="none";
         homeLogoutButton.style.visibility = "visible";
         userLoggedName.style.visibility = "visible";
         userLoggedName.innerHTML=loginName;
-        /*tableEvents.style.visibility = "visible";
-        tableEventsToEdit.style.visibility = "hidden";*/
 
         tableEventsToEdit.style.display = "none";
         refreshButton.style.visibility="hidden"
@@ -159,8 +156,7 @@ homeLogoutButton.addEventListener('click', function(){
     var loginName= document.getElementById('login_username').value;
 
     ipcRenderer.once('actionLogoutReply', function(event, response){
-      role.innerHTML = response.missatge.toString();
-      username.innerHTML= "Adéu!! "+ loginName;
+      username.style.visibility="visible";
       homeLoginButton.style.display="initial";
       userLoggedName.style.visibility = "visible";
       userLoggedName.innerHTML="";
@@ -178,7 +174,7 @@ homeLogoutButton.addEventListener('click', function(){
    ipcRenderer.send('invokeLogoutAction', {name: loginName});
 });
 
-
+//funció per a la taula d'events que permet assignar a cada event un link per a ser editat
 editEvent.addEventListener('click', function(){
       console.log("editEventClick")
    ipcRenderer.send('invokeEditEventAction', "");
