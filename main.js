@@ -95,12 +95,12 @@ ipcMain.on('invokeEditEventAction', function(event, data){
     if (EditWindow === null) {
       createEditWindow()
     }
+    var resultat=null;
     if(data.id!=null){
-      var resultat=  loginUtils.getEventbyId(event,data.id);
+      resultat=  loginUtils.getEventbyId(event,data.id);
       console.log("resultat main:" + JSON.stringify(resultat));
-      EditWindow.webContents.send('store-data', resultat);
     }
-
+    EditWindow.webContents.send('store-data', resultat);
     EditWindow.show();
   }catch(error){
     console.error(error);
@@ -122,5 +122,10 @@ ipcMain.on('invokeDeleteEventAction', function(event, data){
 //invocació  del GetByFilter Event
 ipcMain.on('invokeGetEventsAction', function(event, data){
   console.info("invokeGetEventsAction" );
-  loginUtils.getByFilter(event, data);
+  loginUtils.getByFilter(event, data, false);
+})
+
+ipcMain.on('invokeGetEventsToEditAction', function(event, data){
+  console.info("invokeGetEventsToEditAction" );
+  loginUtils.getByFilter(event, data, true);
 })

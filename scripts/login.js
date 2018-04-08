@@ -164,26 +164,30 @@ module.exports = {
 
     var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/delete";
     url += "?token=" + token;
-    url += "&idevent=" + eventId;
+    url += "&id=" + eventId;
     console.log("deleteurl:"+ url);
 
-    //temporal
-    event.sender.send('actionDeleteEventReply', {missatge: 'success'})
-/*
-    var reqGet = http.request(url, function(res) {
+    var optionsPost = {
+        host : eventFestHost,
+        port : eventFestPort,
+        path : url,
+        method : 'DELETE'
+    };
+
+    var reqGet = http.request(optionsPost, function(res) {
           console.log("statusCode: ", res.statusCode);
             res.on('data', function(eventDataResult) {
                 var eventResult=  JSON.parse(eventDataResult);
-                event.sender.send('actionDeleteEventReply', eventResult)
+                event.sender.send('actionDeleteEventReply', eventResult);
             });
         });
     reqGet.end();
     reqGet.on('error', function(e) {
         console.error(e);
     });
-    */
   },
-  getByFilter: function(event, eventFilterData){
+
+  getByFilter: function(event, eventFilterData, allowEdit){
     var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/getByFilter";
     url += "?token=" + token;
     url += "&nom=qualsevol nom&data=qualsevol data&municipi=qualsevol municipi";
@@ -191,10 +195,15 @@ module.exports = {
     var reqGet = http.request(url, function(res) {
           console.log("statusCode: ", res.statusCode);
             res.on('data', function(eventDataResult) {
-                  console.log("getByFilter response:"+ eventDataResult);
+                events=[];
+                console.log("getByFilter response:"+ eventDataResult);
                 var eventResult=  JSON.parse(eventDataResult);
                 events=eventResult;
-                event.sender.send('actionGetByFilterEventReply', eventResult);
+                if(allowEdit==true){
+                  event.sender.send('actionGetByFilterEventToEditReply', eventResult);
+                }else{
+                  event.sender.send('actionGetByFilterEventReply', eventResult);
+                }
             });
         });
     reqGet.end();
@@ -204,16 +213,14 @@ module.exports = {
 
   },
 
-
   getEventbyId: function(event, id){
+    let result= null;
     if(events!=null){
       var resultat =  events.filter(function(item) {
   	     return item.id == id;
       });
-      return resultat[0];
-      //event.sender.send('actionGetEventbyIdReply', resultat[0]);
-    }else{
-    //  event.sender.send('actionGetEventbyIdReply', {missatge: "event no trobat"});
+      result= resultat[0];
     }
+    return result;
   }
 }

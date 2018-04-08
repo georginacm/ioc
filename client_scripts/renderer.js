@@ -12,42 +12,83 @@
   let editEventMenu = document.getElementById('editEvent')
   let userLoggedName = document.getElementById('userLoggedName');
   let tableEvents= document.getElementById('tableevents');
+  let tableEventsToEdit= document.getElementById('tableevents_toEdit');
+  tableEventsToEdit.style.display = "none";
+  tableEvents.style.display = "none";
 
-  function fillTableEvents(){
-    ipcRenderer.once('actionGetByFilterEventReply', function(event, response){
+  function fillTableEventsToEdit(){
+    ipcRenderer.on('actionGetByFilterEventToEditReply', function(event, response){
+      clearTable(tableEventsToEdit);
+      console.log(fillTableEventsToEdit);
       console.log(response);
      for (var item in response) {
-        var row = tableEvents.insertRow(1);
-        var cellTitol = row.insertCell(0);
-        var cellCity = row.insertCell(1);
-        var cellStart = row.insertCell(2);
-        var cellFinish = row.insertCell(3);
-        var cellType= row.insertCell(4);
-        var cellId= row.insertCell(5);
-        cellTitol.innerHTML = response[item].event_title;
-        cellCity.innerHTML = response[item].event_city;
-        cellStart.innerHTML = response[item].event_startDate;
-        cellFinish.innerHTML = response[item].event_finishDate;
-        cellType.innerHTML = response[item].event_type;
-        cellId.innerHTML = response[item].id;
+        if(!document.getElementById("eventedit_"+response[item].id)){
+          var row = tableEventsToEdit.insertRow(1);
+          row.id="eventedit_"+response[item].id;
+          var cellTitol = row.insertCell(0);
+          var cellCity = row.insertCell(1);
+          var cellStart = row.insertCell(2);
+          var cellFinish = row.insertCell(3);
+          var cellType= row.insertCell(4);
+          var cellId= row.insertCell(5);
+          cellTitol.innerHTML = response[item].event_title;
+          cellCity.innerHTML = response[item].event_city;
+          cellStart.innerHTML = response[item].event_startDate;
+          cellFinish.innerHTML = response[item].event_finishDate;
+          cellType.innerHTML = response[item].event_type;
+          cellId.innerHTML = "<a href='#'><strong>editar<strong></a>";
+          cellId.value= response[item].id
 
-        cellId.addEventListener('click', function(){
-          ipcRenderer.send('invokeEditEventAction', {id: this.innerHTML});
-        });
+          cellId.addEventListener('click', function(){
+            ipcRenderer.send('invokeEditEventAction', {id: this.value});
+          });
+        }
       }
     })
 
+   ipcRenderer.send('invokeGetEventsToEditAction', {});
+  };
+
+  function fillTableEvents(){
+    ipcRenderer.on('actionGetByFilterEventReply', function(event, response){
+      clearTable(tableEvents);
+      console.log("fillTableEvents");
+      console.log(response);
+     for (var item in response) {
+       if(!document.getElementById("event_"+response[item].id)){
+         var row = tableEvents.insertRow(1);
+         row.id="event_"+response[item].id;
+         var cellTitol = row.insertCell(0);
+         var cellCity = row.insertCell(1);
+         var cellStart = row.insertCell(2);
+         var cellFinish = row.insertCell(3);
+         var cellType= row.insertCell(4);
+         cellTitol.innerHTML = response[item].event_title;
+         cellCity.innerHTML = response[item].event_city;
+         cellStart.innerHTML = response[item].event_startDate;
+         cellFinish.innerHTML = response[item].event_finishDate;
+         cellType.innerHTML = response[item].event_type;
+       }
+      }
+    })
    ipcRenderer.send('invokeGetEventsAction', {});
   };
+
+adminToolsMenu.addEventListener('click', function(){
+/*  tableEvents.style.visibility = "hidden";
+  tableEventsToEdit.style.visibility = "visible";*/
+  tableEventsToEdit.style.display = "block";
+  tableEvents.style.display = "none";
+  fillTableEventsToEdit();
+});
 
 // al loginButton li assignem un listener que fa que envii una senyal al mètode del main.js (invokeLoginAction)
 //i se subscrigui als seus events de actionLoginReply
 loginButton.addEventListener('click', function(){
     var loginName= document.getElementById('login_username').value;
     var loginPassword= document.getElementById('login_password').value;
-
     ipcRenderer.once('actionLoginReply', function(event, response){
-      role.innerHTML = response.missatge.toString();
+    role.innerHTML = response.missatge.toString();
 
       if(response.token){
         username.innerHTML= "Has accedit com a: "+ loginName;
@@ -55,7 +96,11 @@ loginButton.addEventListener('click', function(){
         homeLogoutButton.style.visibility = "visible";
         userLoggedName.style.visibility = "visible";
         userLoggedName.innerHTML=loginName;
-        tableEvents.style.visibility = "visible";
+        /*tableEvents.style.visibility = "visible";
+        tableEventsToEdit.style.visibility = "hidden";*/
+
+        tableEventsToEdit.style.display = "none";
+        tableEvents.style.display = "block";
 
         //en cas de tenir rol administrador, es mostrarán unes opcions específiques del rol
         if(response.user_role== 0 || response.user_role== 1){
@@ -71,7 +116,6 @@ loginButton.addEventListener('click', function(){
         }
       }
       fillTableEvents();
-      console.log(response + " render")
     })
 
    ipcRenderer.send('invokeLoginAction', {name: loginName, password: loginPassword});
@@ -113,7 +157,10 @@ homeLogoutButton.addEventListener('click', function(){
       useremail.style.visibility = "hidden";
       adminToolsMenu.style.display = "none";
       editEventMenu.style.display = "none";
-      tableEvents.style.visibility = "hidden";
+      tableEvents.style.display = "none";
+      tableEventsToEdit.style.display = "none";
+      clearTable(tableEvents);
+      clearTable(tableEventsToEdit);
     })
 
    ipcRenderer.send('invokeLogoutAction', {name: loginName});
@@ -124,3 +171,11 @@ editEvent.addEventListener('click', function(){
       console.log("editEventClick")
    ipcRenderer.send('invokeEditEventAction', "");
 });
+
+var clearTable = function(table){
+  var tableHeaderRowCount = 1;
+  var rowCount = table.rows.length;
+  for (var i = tableHeaderRowCount; i < rowCount; i++) {
+      table.deleteRow(tableHeaderRowCount);
+  }
+};

@@ -46,7 +46,7 @@
             <tr>
               <td class="label">Carrer</td>
               <td class="slimField"><input class="field" id="street_number" disabled="true"></input></td>
-              <td class="wideField" colspan="2"><input class="field" id="route"  disabled="true"></input></td>
+              <td class="wideField" colspan="2"><input class="field" id="route"  disabled="true" onblur="initMap()"></input></td>
             </tr>
             <tr>
               <td class="label">Municipi</td>
@@ -66,10 +66,10 @@
         </div>
 
         <button id="save_event"  style="width:auto;">Desa</button>
-        <button id="delete_event" style="/*visibility:hidden;*/ width:auto; background-color:red;">Esborra</button>
+        <button id="delete_event" style="visibility:hidden; width:auto; background-color:red;">Esborra</button>
 
-        <p id="event_id" style="/*visibility:hidden;*/ ">23<p>
-        <span><h1 id="create_result"></h1></span>
+        <p id="event_id" style="visibility:hidden;*"><p>
+        <span><h1 id="create_result" color="green"></h1></span>
 
       </form>
     </div>
@@ -135,6 +135,11 @@
           infowindow.open(map, marker);
           fillInAddress(place);
         });
+
+      /*  var test=document.getElementById('pac-input');
+        test.addEventListener('blur', function(){
+          autocomplete.place_changed();
+        });*/
       }
 
       var componentForm = {

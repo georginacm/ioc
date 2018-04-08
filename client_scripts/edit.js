@@ -11,7 +11,9 @@ let eventCreateButton = document.getElementById('save_event')
 let eventDeleteButton = document.getElementById('delete_event')
 let createResult = document.getElementById('create_result')
 
+
 ipcRenderer.on('store-data', function(event, eventAEditar){
+  if(eventAEditar!=null){
     console.info(JSON.stringify(eventAEditar));
     eventNom.value =eventAEditar.event_title;
     datainici.value = eventAEditar.event_startDate;
@@ -27,10 +29,15 @@ ipcRenderer.on('store-data', function(event, eventAEditar){
     document.getElementById('pac-input').innerHTML= eventAEditar.event_address;
     document.getElementById('pac-input').blur();
 
-
+    delete_event.style.visibility = "visible";
+  }else{
+    console.info("event a editar buit")
+    clear();
+  }
 });
 
-  window.onunload = function(){
+function clear(){
+  console.log("clear");
     eventNom.value ="";
     datainici.value = "";
     datafi.value = "";
@@ -39,6 +46,7 @@ ipcRenderer.on('store-data', function(event, eventAEditar){
     direccioCompleta.value = "";
     municipi.value = "";
     eventid.innerHTML= "";
+    delete_event.style.visibility = "hidden";
   };
 
 
@@ -60,6 +68,8 @@ eventCreateButton.addEventListener('click', function(){
       console.log(response.missatge);
       //var resposta=  JSON.parse(response);
       createResult.innerHTML = response.missatge.toString();
+      clear();
+      alert(response.missatge.toString());
       console.log(response + " render")
     })
 
@@ -67,16 +77,10 @@ eventCreateButton.addEventListener('click', function(){
 });
 
 eventDeleteButton.addEventListener('click', function(){
-    var deleteData= {id: eventid.innerText};
-    var jsonData = JSON.stringify(deleteData);
-    console.log(jsonData);
-
     ipcRenderer.once('actionDeleteEventReply', function(event, response){
       console.log(response.missatge);
-      //var resposta=  JSON.parse(response);
       createResult.innerHTML = response.missatge.toString();
-      console.log(response + " render")
     })
 
-   ipcRenderer.send('invokeDeleteEventAction', deleteData );
+   ipcRenderer.send('invokeDeleteEventAction', {id: eventid.innerText} );
 });
