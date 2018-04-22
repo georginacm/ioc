@@ -258,3 +258,7 @@ footer {
   align-self: center;
   background-color: transparent;
 }
+
+#filter input, select{
+    padding: 5px;
+}
