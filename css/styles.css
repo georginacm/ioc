@@ -245,11 +245,16 @@ footer {
 }
 
 .article td, th {
-    border: 1px solid #93c1f3;
     text-align: left;
     padding: 8px;
 }
 
 .article tr:nth-child(even) {
     background-color: #93c1f3;
+}
+
+#filter tr{
+  border: 1px solid #93c1f3;
+  align-self: center;
+  background-color: transparent;
 }

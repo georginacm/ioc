@@ -1,9 +1,16 @@
 // JS que es carrega desde el index.html
 const {ipcRenderer} = require('electron')
 let username, useremail,role,loginButton,homeLoginButton,homeLogoutButton, homeSignupButton;
-let signupButton, adminToolsMenu, editEventMenu, userLoggedName,tableEvents,tableEventsToEdit, refreshButton;
+let signupButton, adminToolsMenu, editEventMenu,showEventsMenu, userLoggedName,tableEvents,tableEventsToEdit, refreshButton;
 
 initObjects();
+
+showEventsMenu.addEventListener('click', function(){
+  tableEventsToEdit.style.display = "none";
+  refreshButton.style.visibility="hidden";
+  fillTableEvents();
+  tableEvents.style.display="";
+});
 
 //Al botó d'administració li assignem un Listener que ens porta a la pantalla per a poder editar els events
 adminToolsMenu.addEventListener('click', function(){
@@ -28,14 +35,14 @@ loginButton.addEventListener('click', function(){
   ipcRenderer.once('actionLoginReply', function(event, response){
 
     if(response.token){
-      username.style.visibility="hidden"; //"Has accedit com a: "+ loginName;
+      username.style.display="none"; //"Has accedit com a: "+ loginName;
       homeLoginButton.style.display="none";
       homeLogoutButton.style.visibility = "visible";
       userLoggedName.style.visibility = "visible";
       userLoggedName.innerHTML=loginName;
 
       tableEventsToEdit.style.display = "none";
-      refreshButton.style.visibility="hidden"
+      refreshButton.style.visibility="hidden";
       tableEvents.style.display = "";
 
       //en cas de tenir rol administrador, es mostrarán unes opcions específiques del rol
@@ -83,12 +90,12 @@ homeLogoutButton.addEventListener('click', function(){
   var loginName= document.getElementById('login_username').value;
 
   ipcRenderer.once('actionLogoutReply', function(event, response){
-    username.style.visibility="visible";
+    username.style.display="";
+    useremail.style.display = "none";
     homeLoginButton.style.display="initial";
     userLoggedName.style.visibility = "visible";
     userLoggedName.innerHTML="";
     homeLogoutButton.style.visibility = "hidden";
-    useremail.style.visibility = "hidden";
     adminToolsMenu.style.display = "none";
     editEventMenu.style.display = "none";
     tableEvents.style.display = "none";
@@ -110,20 +117,21 @@ editEvent.addEventListener('click', function(){
 
 
 function initObjects(){
-  username= document.getElementById('userName_home')
-  useremail = document.getElementById('userEmail_home')
-  role = document.getElementById('userRole_home')
-  loginButton = document.getElementById('loginbutton')
-  homeLoginButton = document.getElementById('home_loginbutton')
-  homeLogoutButton = document.getElementById('home_logoutbutton')
-  homeSignupButton = document.getElementById('home_signupbutton')
-  signupButton = document.getElementById('signupbutton')
-  adminToolsMenu = document.getElementById('adminTools')
-  editEventMenu = document.getElementById('editEvent')
+  username= document.getElementById('userName_home');
+  useremail = document.getElementById('userEmail_home');
+  role = document.getElementById('userRole_home');
+  loginButton = document.getElementById('loginbutton');
+  homeLoginButton = document.getElementById('home_loginbutton');
+  homeLogoutButton = document.getElementById('home_logoutbutton');
+  homeSignupButton = document.getElementById('home_signupbutton');
+  signupButton = document.getElementById('signupbutton');
+  adminToolsMenu = document.getElementById('adminTools');
+  editEventMenu = document.getElementById('editEvent');
   userLoggedName = document.getElementById('userLoggedName');
   tableEvents= document.getElementById('tableevents');
   tableEventsToEdit= document.getElementById('tableevents_toEdit');
   refreshButton = document.getElementById('refresh_button');
+  showEventsMenu=document.getElementById('showEvents');
   tableEventsToEdit.style.display = "none";
   tableEvents.style.display = "none";
 };
@@ -131,7 +139,7 @@ function initObjects(){
 function fillTableEventsToEdit(){
   ipcRenderer.on('actionGetByFilterEventToEditReply', function(event, response){
     clearTable(tableEventsToEdit);
-    console.log(fillTableEventsToEdit);
+    console.log("fillTableEventsToEdit");
     console.log(response);
     for (var item in response) {
       if(!document.getElementById("eventedit_"+response[item].id)){

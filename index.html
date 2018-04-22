@@ -2,106 +2,132 @@
 <html>
 <head>
 	<title>EventFest IOC</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="./css/styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
-<div class="flex-container">
-<header>
-	<div class="secundari">
-		  <h1>Welcome to eventFestIOC!</h1>
-	</div>
-  <div class="principal">
-		<span  id="userLoggedName" class="headername" style="visibility:hidden;" ></span>
-		<button id="home_logoutbutton" style="visibility:hidden; width:auto; background-color:red;"  >Logout</button>
-    <button id="home_loginbutton" onclick="document.getElementById('login').style.display='block'" style="width:auto;">Login</button>
-    <button id="home_signupbutton"  onclick="document.getElementById('signup').style.display='block'" style="width:auto;">Sign Up</button>
-  </div>
-</header>
+	<div class="flex-container">
+		<header>
+			<div class="secundari">
+				<h1>Welcome to eventFestIOC!</h1>
+			</div>
+			<div class="principal">
+				<span  id="userLoggedName" class="headername" style="visibility:hidden;" ></span>
+				<button id="home_logoutbutton" style="visibility:hidden; width:auto; background-color:red;"  >Logout</button>
+				<button id="home_loginbutton" onclick="document.getElementById('login').style.display='block'" style="width:auto;">Login</button>
+				<button id="home_signupbutton"  onclick="document.getElementById('signup').style.display='block'" style="width:auto;">Sign Up</button>
+			</div>
+		</header>
 
-<nav class="nav">
-	<table>
-		<tr>
-			<td><div id="activitats" class="menu"><a href="#"><strong>Activitats</strong></a><div></td>
-			<td><div class="menu"><a href="#"><strong>Cultura</strong></a><div></td>
-			<td><div class="menu"><a href="#"><strong>Contacte</strong></a></div></td>
-			<td><div id="adminTools" style="display:none;" class="menu admin" ><a href="#"><strong>Administració d'events</strong></a></div></td>
-			<td><div id="editEvent" style="display:none;" class="menu admin" ><a href="#"><strong>Crear Event</strong></a></div></td>
-		</tr>
-	</table>
-</nav>
+		<nav class="nav">
+			<table>
+				<tr>
+					<td><div id="showEvents" class="menu"><a href="#"><strong>Activitats</strong></a><div></td>
+						<td><div class="menu"><a href="#"><strong>Cultura</strong></a><div></td>
+							<td><div class="menu"><a href="#"><strong>Contacte</strong></a></div></td>
+							<td><div id="adminTools" style="display:none;" class="menu admin" ><a href="#"><strong>Administració d'events</strong></a></div></td>
+							<td><div id="editEvent" style="display:none;" class="menu admin" ><a href="#"><strong>Crear Event</strong></a></div></td>
+						</tr>
+					</table>
+				</nav>
 
-<article class="article">
-	<span>  <p id="userName_home">Accedeix per a poder veure el propers events</p><h1 id="userEmail_home"></h1>
-	<p id="userRole_home" style="text-decoration-color:red;"></p></span>
+				<article class="article">
+					<p id="userName_home">Accedeix per a poder veure el propers events</p><h1 id="userEmail_home"></h1>
+					<p id="userRole_home" style="text-decoration-color:red;"></p>
 
-	<button id="refresh_button" style="visibility:hidden; width:auto; background-color:blue;" >Refresca</button>
-	<table id="tableevents"  >
-		<tr><th>Event</th><th>Ubicació</th><th>Data inici</th><th>Data fi</th><th>Tipus D'event</th></tr>
-	</table>
+					<div id="showEventsTable">
+						<p style="text-decoration-color: #93c1f3; font-weight: bold;" >Cercador d'events</p>
+						<table id="filter">
+								<tr><td>Nom</td><td>Munici</td><td>Data inici</td><td>Data fi</td><td>Tipus D'event</td></tr>
+								<tr>
+									<td><input type="text" id="filter_name" placeholder="Nom..."></td>
+									<td><input type="text" id="filter_municipi" placeholder="Municipi..."></td>
+									<td><input type="date" id="filter_inici" ></td>
+									<td><input type="date" id="filter_fi" ></td>
+									<td>
+										<select id="filter_tipusevent" name="tipusevents">
+											<option value="cultural">Cultural</option>
+											<option value="fira">Fira</option>
+											<option value="festa">Festa popular</option>
+											<option value="concert">Concert</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+						</br></br></br></br>
+						<table>
+							<table id="tableevents"  >
+								<tr><th>Event</th><th>Ubicació</th><th>Data inici</th><th>Data fi</th><th>Tipus D'event</th></tr>
+							</table>
+						</div>
 
-	<table id="tableevents_toEdit"  >
-		<tr><th>Event</th><th>Ubicació</th><th>Data inici</th><th>Data fi</th><th>Tipus D'event</th><th></th></tr>
-	</table>
-</article>
 
-<footer> &copy; eventFestIOC</footer>
-</div>
+						<div id="editEventsTable">
+							<button id="refresh_button" style="visibility:hidden; width:auto; background-color:blue;" >Refresca</button>
+							<table id="tableevents_toEdit"  >
+								<tr><th>Event</th><th>Ubicació</th><th>Data inici</th><th>Data fi</th><th>Tipus D'event</th><th></th></tr>
+							</table>
+						</div>
 
-<div id="login" class="modal">
-  <div  class="modal-content animate">
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
-      <img src="img_avatar.png" alt="Avatar" class="avatar">
-    </div>
+					</article>
 
-    <div class="container">
-      <label for="uname"><b>Username</b></label>
-      <input type="text" id="login_username" placeholder="Enter Username" name="uname" required>
+					<footer> &copy; eventFestIOC</footer>
+				</div>
 
-      <label for="psw"><b>Password</b></label>
-      <input type="password" id="login_password"  placeholder="Enter Password" name="psw" required>
+				<div id="login" class="modal">
+					<div  class="modal-content animate">
+						<div class="imgcontainer">
+							<span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
+							<img src="img_avatar.png" alt="Avatar" class="avatar">
+						</div>
 
-      <button type="submit" id="loginbutton" onclick="document.getElementById('login').style.display='none'">Login</button>
-    </div>
+						<div class="container">
+							<label for="uname"><b>Username</b></label>
+							<input type="text" id="login_username" placeholder="Enter Username" name="uname" required>
 
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn">Cancel</button>
-      <span class="psw">Has oblidat <a href="#">password?</a></span>
-    </div>
-  </div>
-</div>
-<!-- SugnUp-->
-<div id="signup" class="modal">
-  <span onclick="document.getElementById('signup').style.display='none'" class="close" title="Close Modal">&times;</span>
-    <div class="modal-content animate">
-    <div class="container">
-      <h1>Sign Up</h1>
-			<label for="email"><b>Name</b></label>
-			<input type="text" id="signup_username" placeholder="Enter you name" name="name" required>
+							<label for="psw"><b>Password</b></label>
+							<input type="password" id="login_password"  placeholder="Enter Password" name="psw" required>
 
-      <label for="email"><b>Email</b></label>
-      <input type="text" id="signup_email" placeholder="Enter Email" name="email" required>
+							<button type="submit" id="loginbutton" onclick="document.getElementById('login').style.display='none'">Login</button>
+						</div>
 
-      <label for="psw"><b>Password</b></label>
-      <input type="password" id="signup_password" placeholder="Enter Password" name="psw" required>
+						<div class="container" style="background-color:#f1f1f1">
+							<button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn">Cancel</button>
+							<span class="psw">Has oblidat <a href="#">password?</a></span>
+						</div>
+					</div>
+				</div>
+				<!-- SugnUp-->
+				<div id="signup" class="modal">
+					<span onclick="document.getElementById('signup').style.display='none'" class="close" title="Close Modal">&times;</span>
+					<div class="modal-content animate">
+						<div class="container">
+							<h1>Sign Up</h1>
+							<label for="email"><b>Name</b></label>
+							<input type="text" id="signup_username" placeholder="Enter you name" name="name" required>
 
-      <label for="psw-repeat"><b>Repeteix el Password</b></label>
-      <input type="password" id="signup_password2" placeholder="Repeat Password" name="psw-repeat" required>
+							<label for="email"><b>Email</b></label>
+							<input type="text" id="signup_email" placeholder="Enter Email" name="email" required>
 
-			<label for="role" id="signup_admin_label" style="display:none;"><b>És Administador?</b></label>
-			<input type="checkbox" id="signup_admin" style="display:none;"  name="admin" >
+							<label for="psw"><b>Password</b></label>
+							<input type="password" id="signup_password" placeholder="Enter Password" name="psw" required>
 
-      <div class="clearfix">
-        <button type="button" onclick="document.getElementById('signup').style.display='none'" class="cancelbtn">Cancel</button>
-        <button type="submit"  id="signupbutton" onclick="document.getElementById('signup').style.display='none'" class="signupbtn">Sign Up</button>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
-     require('./client_scripts/renderer.js')
-</script>
-</body>
-</html>
+							<label for="psw-repeat"><b>Repeteix el Password</b></label>
+							<input type="password" id="signup_password2" placeholder="Repeat Password" name="psw-repeat" required>
+
+							<label for="role" id="signup_admin_label" style="display:none;"><b>És Administador?</b></label>
+							<input type="checkbox" id="signup_admin" style="display:none;"  name="admin" >
+
+							<div class="clearfix">
+								<button type="button" onclick="document.getElementById('signup').style.display='none'" class="cancelbtn">Cancel</button>
+								<button type="submit"  id="signupbutton" onclick="document.getElementById('signup').style.display='none'" class="signupbtn">Sign Up</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<script>
+				require('./client_scripts/renderer.js')
+				</script>
+			</body>
+			</html>
