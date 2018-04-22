@@ -59,7 +59,7 @@ function createShowEventWindow(){
   }))
 
   ShowEventWindow.on('close', function (event) {
-    console.log("close EditWindow");
+    console.log("close ShowEventWindow");
     ShowEventWindow.hide();
     event.preventDefault();
   })
