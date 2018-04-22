@@ -2,36 +2,37 @@ const crypto = require('crypto');
 const http = require('http');
 let token = null;
 let user_id=null;
-let eventFestHost= "localhost";
+let eventFestHost= "192.168.1.42";
 let eventFestPort ="8080";
 let events=[];
 
-//Mòdul que fa les crides al servidor relacionades amb el login d'usuari (login, signup i logout)
-// i retorna a qui estigui subscrit al actionLoginReply, o actionSignupReply o actionLogoutReply ( els event onClick del render.js) el JSON amb els resultats del servidor
+//Mòdul que fa les crides al servidor
+// i retorna a qui estigui subscrit als events de resposta com actionLoginReply, o actionSignupReply o actionLogoutReply, actionCreateEventReply, etc.
+// ( els event onClick del render.js i de edit.js) el JSON amb els resultats del servidor
 
 module.exports = {
   login: function(event, userData) {
     var userName=userData.name;
     var pwd = userData.password;
-   pwd= crypto.createHash('md5').update(pwd).digest("hex");
+    pwd= crypto.createHash('md5').update(pwd).digest("hex");
 
     var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/users/connect";
     url += "?login=" + userName;
     url += "&pass=" + pwd;
 
     var reqGet = http.request(url, function(res) {
-          console.log("statusCode: ", res.statusCode);
-            res.on('data', function(userDataResult) {
-                var user=  JSON.parse(userDataResult);
-                token= user.token;
-                console.log("token " +token);
-                console.log("afeterlogin: "+ userDataResult);
-                event.sender.send('actionLoginReply', user)
-            });
-        });
+      console.log("statusCode: ", res.statusCode);
+      res.on('data', function(userDataResult) {
+        var user=  JSON.parse(userDataResult);
+        token= user.token;
+        console.log("token " +token);
+        console.log("afeterlogin: "+ userDataResult);
+        event.sender.send('actionLoginReply', user)
+      });
+    });
     reqGet.end();
     reqGet.on('error', function(e) {
-        console.error(e);
+      console.error(e);
     });
   },
 
@@ -42,7 +43,7 @@ module.exports = {
 
     var url="/eventfest/rest/users/create";
 
-   console.log("signupurl:"+ url);
+    console.log("signupurl:"+ url);
     var user= {
       user_login:userData.name,
       user_pass: pwd_signup,
@@ -52,32 +53,32 @@ module.exports = {
     var jsonObject = JSON.stringify(user);
     console.log("signupdata: " + jsonObject);
     var postheaders = {
-        'Content-Type' : 'application/json',
-        'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
+      'Content-Type' : 'application/json',
+      'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
     };
 
     var optionsPost = {
-        host : eventFestHost,
-        port : eventFestPort,
-        path : url,
-        method : 'POST',
-        headers : postheaders
+      host : eventFestHost,
+      port : eventFestPort,
+      path : url,
+      method : 'POST',
+      headers : postheaders
     };
 
     var reqPost = http.request(optionsPost, function(res) {
-        console.log("statusCode: ", res.statusCode);
-        res.on('data', function(response) {
-            console.info('POST result:\n');
-            process.stdout.write(response);
-            console.info('\n\nPOST completed');
-            event.sender.send('actionSignupReply', response)
-        });
+      console.log("statusCode: ", res.statusCode);
+      res.on('data', function(response) {
+        console.info('POST result:\n');
+        process.stdout.write(response);
+        console.info('\n\nPOST completed');
+        event.sender.send('actionSignupReply', response)
+      });
     });
 
     reqPost.write(jsonObject);
     reqPost.end();
     reqPost.on('error', function(e) {
-        console.error(e);
+      console.error(e);
     });
   },
 
@@ -89,68 +90,68 @@ module.exports = {
     url += "&token=" + token;
 
     var reqGet = http.request(url, function(res) {
-          console.log("statusCode: ", res.statusCode);
-            res.on('data', function(userDataResult) {
-              console.info(' result:\n');
-              process.stdout.write(userDataResult);
-                var user=  JSON.parse(userDataResult);
-                token= null;
-                console.log("token: " +token);
-                event.sender.send('actionLogoutReply', user)
-            });
-        });
+      console.log("statusCode: ", res.statusCode);
+      res.on('data', function(userDataResult) {
+        console.info(' result:\n');
+        process.stdout.write(userDataResult);
+        var user=  JSON.parse(userDataResult);
+        token= null;
+        console.log("token: " +token);
+        event.sender.send('actionLogoutReply', user)
+      });
+    });
     reqGet.end();
     reqGet.on('error', function(e) {
-        console.error(e);
+      console.error(e);
     });
   },
 
   create:  function(event, eventData) {
 
     var url="/eventfest/rest/events/create";
-        url += "?token=" + token;
-   console.log("createurl:"+ url);
+    url += "?token=" + token;
+    console.log("createurl:"+ url);
 
     var createData= {
-       event_title : eventData.nom,
-       event_startDate : eventData.datainici,
-       event_finishDate : eventData.datafi,
-       event_type : eventData.tipus,
-       event_description : eventData.descripcio,
-       event_address : eventData.direccio,
-       users_id: 1,
-       event_city : eventData.municipi
-     };
+      event_title : eventData.nom,
+      event_startDate : eventData.datainici,
+      event_finishDate : eventData.datafi,
+      event_type : eventData.tipus,
+      event_description : eventData.descripcio,
+      event_address : eventData.direccio,
+      users_id: 1,
+      event_city : eventData.municipi
+    };
 
     var jsonObject = JSON.stringify(createData);
     console.log("createdata: " + jsonObject);
     var postheaders = {
-        'Content-Type' : 'application/json; charset=utf-8',
-        'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
-          };
+      'Content-Type' : 'application/json; charset=utf-8',
+      'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
+    };
 
     var optionsPost = {
-        host : eventFestHost,
-        port : eventFestPort,
-        path : url,
-        method : 'POST',
-        headers : postheaders
+      host : eventFestHost,
+      port : eventFestPort,
+      path : url,
+      method : 'POST',
+      headers : postheaders
     };
 
     var reqPost = http.request(optionsPost, function(res) {
-        console.log("statusCode: ", res.statusCode);
-        res.on('data', function(response) {
-            console.info('POST result:\n');
-            process.stdout.write(response);
-            console.info('\n\nPOST completed');
-            event.sender.send('actionCreateEventReply', response)
-        });
+      console.log("statusCode: ", res.statusCode);
+      res.on('data', function(response) {
+        console.info('POST result:\n');
+        process.stdout.write(response);
+        console.info('\n\nPOST completed');
+        event.sender.send('actionCreateEventReply', response)
+      });
     });
 
     reqPost.write(jsonObject);
     reqPost.end();
     reqPost.on('error', function(e) {
-        console.error(e);
+      console.error(e);
     });
 
   },
@@ -158,50 +159,50 @@ module.exports = {
   update: function(event, eventData){
     var eventId=eventData.id;
     var url="/eventfest/rest/events/update";
-        url += "?token=" + token;
-        url += "&id=" + eventId;
-   console.log("updateurl:"+ url);
+    url += "?token=" + token;
+    url += "&id=" + eventId;
+    console.log("updateurl:"+ url);
 
     var createData= {
-       event_title : eventData.nom,
-       event_startDate : eventData.datainici,
-       event_finishDate : eventData.datafi,
-       event_type : eventData.tipus,
-       event_description : eventData.descripcio,
-       event_address : eventData.direccio,
-       users_id: 1,
-       event_city : eventData.municipi
-     };
+      event_title : eventData.nom,
+      event_startDate : eventData.datainici,
+      event_finishDate : eventData.datafi,
+      event_type : eventData.tipus,
+      event_description : eventData.descripcio,
+      event_address : eventData.direccio,
+      users_id: 1,
+      event_city : eventData.municipi
+    };
 
     var jsonObject = JSON.stringify(createData);
     console.log("createdata: " + jsonObject);
     var postheaders = {
-        'Content-Type' : 'application/json; charset=utf-8',
-        'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
-          };
+      'Content-Type' : 'application/json; charset=utf-8',
+      'Content-Length' : Buffer.byteLength(jsonObject, 'utf8')
+    };
 
     var optionsPut = {
-        host : eventFestHost,
-        port : eventFestPort,
-        path : url,
-        method : 'PUT',
-        headers : postheaders
+      host : eventFestHost,
+      port : eventFestPort,
+      path : url,
+      method : 'PUT',
+      headers : postheaders
     };
 
     var reqPut = http.request(optionsPut, function(res) {
-        console.log("statusCode: ", res.statusCode);
-        res.on('data', function(response) {
-            process.stdout.write(response); // escriu a la consola
-            var eventResposta= JSON.parse(response);
-            var resposta="";
-            process.stdout.write("id:"+ eventResposta.id);
-            if(eventResposta.id!=undefined){
-             resposta=JSON.stringify({missatge: "Event modificat correctament"});
-            }else{
-              resposta=response;
-            }
-            event.sender.send('actionCreateEventReply', resposta);
-        });
+      console.log("statusCode: ", res.statusCode);
+      res.on('data', function(response) {
+        process.stdout.write(response); // escriu a la consola
+        var eventResposta= JSON.parse(response);
+        var resposta="";
+        process.stdout.write("id:"+ eventResposta.id);
+        if(eventResposta.id!=undefined){
+          resposta=JSON.stringify({missatge: "Event modificat correctament"});
+        }else{
+          resposta=response;
+        }
+        event.sender.send('actionCreateEventReply', resposta);
+      });
     });
 
     reqPut.write(jsonObject);
@@ -221,22 +222,22 @@ module.exports = {
     console.log("deleteurl:"+ url);
 
     var optionsPost = {
-        host : eventFestHost,
-        port : eventFestPort,
-        path : url,
-        method : 'DELETE'
+      host : eventFestHost,
+      port : eventFestPort,
+      path : url,
+      method : 'DELETE'
     };
 
     var reqGet = http.request(optionsPost, function(res) {
-          console.log("statusCode: ", res.statusCode);
-            res.on('data', function(eventDataResult) {
-                var eventResult=  JSON.parse(eventDataResult);
-                event.sender.send('actionDeleteEventReply', eventResult);
-            });
-        });
+      console.log("statusCode: ", res.statusCode);
+      res.on('data', function(eventDataResult) {
+        var eventResult=  JSON.parse(eventDataResult);
+        event.sender.send('actionDeleteEventReply', eventResult);
+      });
+    });
     reqGet.end();
     reqGet.on('error', function(e) {
-        console.error(e);
+      console.error(e);
     });
   },
 
@@ -246,22 +247,22 @@ module.exports = {
     url += "&nom=qualsevol nom&data=qualsevol data&municipi=qualsevol municipi";
 
     var reqGet = http.request(url, function(res) {
-          console.log("statusCode: ", res.statusCode);
-            res.on('data', function(eventDataResult) {
-                events=[];
-                console.log("getByFilter response:"+ eventDataResult);
-                var eventResult=  JSON.parse(eventDataResult);
-                events=eventResult;
-                if(allowEdit==true){
-                  event.sender.send('actionGetByFilterEventToEditReply', eventResult);
-                }else{
-                  event.sender.send('actionGetByFilterEventReply', eventResult);
-                }
-            });
-        });
+      console.log("statusCode: ", res.statusCode);
+      res.on('data', function(eventDataResult) {
+        events=[];
+        console.log("getByFilter response:"+ eventDataResult);
+        var eventResult=  JSON.parse(eventDataResult);
+        events=eventResult;
+        if(allowEdit==true){
+          event.sender.send('actionGetByFilterEventToEditReply', eventResult);
+        }else{
+          event.sender.send('actionGetByFilterEventReply', eventResult);
+        }
+      });
+    });
     reqGet.end();
     reqGet.on('error', function(e) {
-        console.error(e);
+      console.error(e);
     });
 
   },
@@ -270,7 +271,7 @@ module.exports = {
     let result= null;
     if(events!=null){
       var resultat =  events.filter(function(item) {
-  	     return item.id == id;
+        return item.id == id;
       });
       result= resultat[0];
     }

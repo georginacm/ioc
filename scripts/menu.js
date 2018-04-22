@@ -6,7 +6,7 @@ module.exports = {
   renderMenu: function() {
     const template = [
       {
-        label: 'Test_Georgina',
+        label: 'Opcions',
         submenu: [
           {
           label: 'web ioc',
