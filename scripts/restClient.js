@@ -248,16 +248,21 @@ module.exports = {
     var datafrom="qualsevol data";
     var dataTo="";
 
-    if(eventFilterData.name!=null){ nom=eventFilterData.name }
-    if(eventFilterData.city!=null){ municipi=eventFilterData.name }
-    if(eventFilterData.type!=null){ tipus= eventFilterData.type }
-    if(eventFilterData.from!=null){ datafrom= eventFilterData.from }
-    if(eventFilterData.to!=null){ dataTo= eventFilterData.to }
+    if(eventFilterData.name!="" && eventFilterData.name){ nom=eventFilterData.name }
+    if(eventFilterData.city!="" && eventFilterData.city){ municipi=eventFilterData.city }
+    if(eventFilterData.type!="" && eventFilterData.type){ tipus= eventFilterData.type }
+    if(eventFilterData.from!="" && eventFilterData.from){ datafrom= eventFilterData.from }
+    if(eventFilterData.to!="" && eventFilterData.to){ dataTo= eventFilterData.to }
 
     var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/getByFilter";
     url += "?token=" + token;
-    url += "&nom="+ nom +"&data="+ +"qualsevol data""&municipi=";
+    url += "&nom="+ nom +"&data="+ datafrom +"&municipi="+municipi;
+    console.log(url);
 
+    var urlTest= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/getByFilter";
+    urlTest += "?token=" + token;
+    urlTest += "&nom="+ nom +"&from="+ datafrom +"&to="+ dataTo +"&municipi="+municipi + "&tipus="+tipus;
+    console.log(urlTest);
 
     var reqGet = http.request(url, function(res) {
       console.log("statusCode: ", res.statusCode);
