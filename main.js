@@ -14,10 +14,11 @@ let service= require("./scripts/restClient")
 
 let mainWindow
 let EditWindow
+let ShowEventWindow
 
   // Crea la finestra principal de l'aplicació i carrega el fitxer index.html
 function createMainWindow () {
-  mainWindow = new BrowserWindow({width: 900, height: 850})
+  mainWindow = new BrowserWindow({width: 900, height: 800})
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
@@ -29,6 +30,7 @@ function createMainWindow () {
   })
 
   createEditWindow();
+  createShowEventWindow();
 }
 
 function createEditWindow(){
@@ -45,7 +47,23 @@ function createEditWindow(){
     EditWindow.hide();
     event.preventDefault();
   })
-}
+};
+
+function createShowEventWindow(){
+  ShowEventWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true })
+  ShowEventWindow.setAlwaysOnTop(true);
+  ShowEventWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'templates/editEvent.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  ShowEventWindow.on('close', function (event) {
+    console.log("close EditWindow");
+    ShowEventWindow.hide();
+    event.preventDefault();
+  })
+};
 
 //  Quan s'acaba de carregar tota la app d'Electron es crea la finestra principal
 app.on('ready', createMainWindow)
@@ -135,4 +153,23 @@ ipcMain.on('invokeGetEventsAction', function(event, data){
 ipcMain.on('invokeGetEventsToEditAction', function(event, data){
   console.info("invokeGetEventsToEditAction" );
   service.getByFilter(event, data, true);
+})
+
+//invocació del ShowEvent que ens servirà per visualitzar un únic event
+ipcMain.on('invokeShowEventAction', function(event, data){
+  console.info("invokeShowEventAction" );
+  try{
+    if (ShowEventWindow === null) {
+      createShowEventWindow()
+    }
+    var resultat=null;
+    if(data.id!=null){
+      resultat=  service.getEventbyId(event,data.id);
+      console.log("resultat show main:" + JSON.stringify(resultat));
+    }
+    ShowEventWindow.webContents.send('store-data', resultat);
+    ShowEventWindow.show();
+  }catch(error){
+    console.error(error);
+  }
 })

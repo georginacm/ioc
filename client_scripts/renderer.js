@@ -211,7 +211,7 @@ function fillTableEvents(){
     for (var item in response) {
       if(!document.getElementById("event_"+response[item].id)){
         var row = tableEvents.insertRow(1);
-        row.id="event_"+response[item].id;
+        row.id= response[item].id;
         var cellTitol = row.insertCell(0);
         var cellCity = row.insertCell(1);
         var cellStart = row.insertCell(2);
@@ -222,6 +222,10 @@ function fillTableEvents(){
         cellStart.innerHTML = response[item].event_startDate;
         cellFinish.innerHTML = response[item].event_finishDate;
         cellType.innerHTML = response[item].event_type;
+
+        row.addEventListener('click', function(){
+          ipcRenderer.send('invokeShowEventAction', {id: this.id});
+        });
       }
     }
   })
