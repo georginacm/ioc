@@ -1,21 +1,45 @@
 // JS que es carrega desde el index.html
 const {ipcRenderer} = require('electron')
 let username, useremail,role,loginButton,homeLoginButton,homeLogoutButton, homeSignupButton;
-let signupButton, adminToolsMenu, editEventMenu,showEventsMenu, userLoggedName,tableEvents,tableEventsToEdit, refreshButton;
+let signupButton, adminToolsMenu, editEventMenu,showEventsMenu, userLoggedName,tableEvents,tableEventsToEdit,showEventsContainer, refreshButton;
+let filter_name, filter_municipi, filter_inici, filter_fi, filter_tipus;
 
 initObjects();
 
 showEventsMenu.addEventListener('click', function(){
   tableEventsToEdit.style.display = "none";
   refreshButton.style.visibility="hidden";
-  fillTableEvents();
   tableEvents.style.display="";
+  showEventsContainer.style.display="";
+  filter_name.innerHTML="";
+  filter_municipi.innerHTML="";
+  filter_inici.innerHTML="";
+  filter_fi.innerHTML="";
+  filter_tipus.innerHTML="";
+  fillTableEvents();
+});
+
+search_button.addEventListener('click', function () {
+
+  ipcRenderer.on('actionGetByFilterEventReply', function(event, response){
+
+  });
+
+  ipcRenderer.send('invokeGetEventsAction', {
+     name:filter_name.value ,
+     city:filter_municipi.value ,
+     from:filter_inici.value ,
+     to: filter_fi.value ,
+     type:filter_tipus.value
+  });
+
 });
 
 //Al botó d'administració li assignem un Listener que ens porta a la pantalla per a poder editar els events
 adminToolsMenu.addEventListener('click', function(){
   tableEventsToEdit.style.display = "";
   tableEvents.style.display = "none";
+  showEventsContainer.style.display="none";
   refreshButton.style.visibility="visible"
   fillTableEventsToEdit();
 });
@@ -24,6 +48,7 @@ adminToolsMenu.addEventListener('click', function(){
 refreshButton.addEventListener('click', function(){
   tableEventsToEdit.style.display = "";
   tableEvents.style.display = "none";
+  showEventsContainer.style.display="none";
   fillTableEventsToEdit();
 });
 
@@ -44,6 +69,7 @@ loginButton.addEventListener('click', function(){
       tableEventsToEdit.style.display = "none";
       refreshButton.style.visibility="hidden";
       tableEvents.style.display = "";
+      showEventsContainer.style.display="";
 
       //en cas de tenir rol administrador, es mostrarán unes opcions específiques del rol
       if(response.user_role== 0 || response.user_role== 1){
@@ -99,6 +125,7 @@ homeLogoutButton.addEventListener('click', function(){
     adminToolsMenu.style.display = "none";
     editEventMenu.style.display = "none";
     tableEvents.style.display = "none";
+    showEventsContainer.style.display="none";
     tableEventsToEdit.style.display = "none";
     refreshButton.style.visibility="hidden";
     clearTable(tableEvents);
@@ -132,8 +159,15 @@ function initObjects(){
   tableEventsToEdit= document.getElementById('tableevents_toEdit');
   refreshButton = document.getElementById('refresh_button');
   showEventsMenu=document.getElementById('showEvents');
+  showEventsContainer=document.getElementById('showEventsContainer');
+  filter_name=document.getElementById('filter_name');
+  filter_municipi=document.getElementById('filter_municipi');
+  filter_inici=document.getElementById('filter_inici');
+  filter_fi=document.getElementById('filter_fi');
+  filter_tipus=document.getElementById('filter_tipus');
   tableEventsToEdit.style.display = "none";
   tableEvents.style.display = "none";
+  showEventsContainer.style.display="none";
 };
 //Funció que omple la taula d'events i permet editar-los
 function fillTableEventsToEdit(){

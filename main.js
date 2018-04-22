@@ -17,7 +17,7 @@ let EditWindow
 
   // Crea la finestra principal de l'aplicació i carrega el fitxer index.html
 function createMainWindow () {
-  mainWindow = new BrowserWindow({width: 850, height: 750})
+  mainWindow = new BrowserWindow({width: 900, height: 850})
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
@@ -127,6 +127,7 @@ ipcMain.on('invokeDeleteEventAction', function(event, data){
 //invocació  del GetByFilter Event
 ipcMain.on('invokeGetEventsAction', function(event, data){
   console.info("invokeGetEventsAction" );
+  console.info(JSON.stringify(data));
   service.getByFilter(event, data, false);
 })
 

@@ -36,29 +36,30 @@
 					<p id="userName_home">Accedeix per a poder veure el propers events</p><h1 id="userEmail_home"></h1>
 					<p id="userRole_home" style="text-decoration-color:red;"></p>
 
-					<div id="showEventsTable">
+					<div id="showEventsContainer">
 						<p style="text-decoration-color: #93c1f3; font-weight: bold;" >Cercador d'events</p>
 						<table id="filter">
-								<tr><td>Nom</td><td>Munici</td><td>Data inici</td><td>Data fi</td><td>Tipus D'event</td></tr>
+								<tr><td>Nom</td><td>Munici</td><td>De</td><td>Fins</td><td>Tipus</td><td></td></tr>
 								<tr>
 									<td><input type="text" id="filter_name" placeholder="Nom..."></td>
 									<td><input type="text" id="filter_municipi" placeholder="Municipi..."></td>
 									<td><input type="date" id="filter_inici" ></td>
 									<td><input type="date" id="filter_fi" ></td>
 									<td>
-										<select id="filter_tipusevent" name="tipusevents">
+										<select id="filter_tipus" name="tipus">
 											<option value="cultural">Cultural</option>
 											<option value="fira">Fira</option>
 											<option value="festa">Festa popular</option>
 											<option value="concert">Concert</option>
 										</select>
 									</td>
+									<td style="border: 1px solid #93c1f3;"><button id="search_button" style=" width:auto; background-color:blue; " >Cerca</button></td>
 								</tr>
 							</table>
 						</br></br></br></br>
 						<table>
 							<table id="tableevents"  >
-								<tr><th>Event</th><th>Ubicació</th><th>Data inici</th><th>Data fi</th><th>Tipus D'event</th></tr>
+								<tr><th>Event</th><th>Ubicació</th><th>Inici</th><th>Fi</th><th>Tipus D'event</th></tr>
 							</table>
 						</div>
 

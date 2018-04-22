@@ -242,9 +242,22 @@ module.exports = {
   },
 
   getByFilter: function(event, eventFilterData, allowEdit){
+    var nom= "qualsevol nom";
+    var municipi="qualsevol municipi";
+    var tipus="";
+    var datafrom="qualsevol data";
+    var dataTo="";
+
+    if(eventFilterData.name!=null){ nom=eventFilterData.name }
+    if(eventFilterData.city!=null){ municipi=eventFilterData.name }
+    if(eventFilterData.type!=null){ tipus= eventFilterData.type }
+    if(eventFilterData.from!=null){ datafrom= eventFilterData.from }
+    if(eventFilterData.to!=null){ dataTo= eventFilterData.to }
+
     var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/getByFilter";
     url += "?token=" + token;
-    url += "&nom=qualsevol nom&data=qualsevol data&municipi=qualsevol municipi";
+    url += "&nom="+ nom +"&data="+ +"qualsevol data""&municipi=";
+
 
     var reqGet = http.request(url, function(res) {
       console.log("statusCode: ", res.statusCode);
