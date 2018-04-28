@@ -50,7 +50,7 @@ function createEditWindow(){
 };
 
 function createShowEventWindow(){
-  ShowEventWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true })
+  ShowEventWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true, width: 950, height: 900 })
   ShowEventWindow.setAlwaysOnTop(true);
   ShowEventWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'templates/event.html'),

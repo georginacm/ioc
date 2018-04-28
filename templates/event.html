@@ -12,18 +12,18 @@
 <body>
 
   <div class="container containerShow">
-    <label for="eventNom">Nom de l'event</label>
-    <input type="text" id="eventNom" name="firstname" placeholder="Your name.." disabled>
-    </br>  </br>  </br>
+    <label for="eventNom">Nom de l'event: </label>
+    <input type="text" id="eventNom" name="firstname" placeholder="Your name.." style= "font-weight: bold;" disabled>
+    </br>  </br>
 
-    <label for="datainici">Data d'inici</label>
-    <input type="date" id="datainici" name="bday" disabled>&nbsp
+    <label for="datainici">Data d'inici: </label>
+    <input type="date" id="datainici" name="bday"  style= "font-weight: bold;" disabled>&nbsp
     <label for="datafi">Data fi</label>
-    <input type="date" id="datafi" name="bday" disabled>
-    </br>  </br>  </br>
+    <input type="date" id="datafi" name="bday" style= "font-weight: bold;" disabled>
+    </br>  </br>
 
-    <label for="tipusevent">Tipus d'event</label>
-    <select id="tipusevent" name="tipusevents" disabled>
+    <label for="tipusevent">Tipus d'event: </label>
+    <select id="tipusevent" name="tipusevents" style="font-weight: bold;" disabled>
       <option value="cultural">Cultural</option>
       <option value="fira">Fira</option>
       <option value="festa">Festa popular</option>
@@ -31,13 +31,13 @@
     </select>
     </br>
 
-    <label for="descripcio">Descripció</label>
-    <textarea id="descripcio" name="descripcio" placeholder="Descripció de l'event.." style="height:200px" disabled></textarea>
-    </br>  </br>  </br>
+    <label for="descripcio">Descripció:</label>
+    <textarea id="descripcio" name="descripcio" placeholder="Descripció de l'event.." style="height:100px; font-weight: bold;" disabled></textarea>
+    </br>
 
-    <label for="pac-input">Ubicació de l'event</label>
     <div class="container">
-      <input id="pac-input" class="controls" type="text" value="Barcelona" oninput="initMap()" placeholder="Enter a location">
+      <label for="pac-input">Ubicació: </label>
+      <input id="pac-input" class="controls" type="text" value="Barcelona" oninput="initMap()" style="font-weight: bold;" disabled placeholder="Enter a location">
       <div id="map"></div>
     </div>
 </div>

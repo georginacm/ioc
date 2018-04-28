@@ -86,9 +86,9 @@ input[type=submit]:hover {
 /*Map*/
 
     #map {
-      height: 450px;
-      width: 450px;
-    }
+      height: 400px;
+      width: 100%;
+     }
    .controls {
      margin-top: 10px;
      border: 1px solid transparent;
