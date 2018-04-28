@@ -1,10 +1,12 @@
 const crypto = require('crypto');
-const http = require('http');
+const https = require('https');
+const fs = require( 'fs' );
 let token = null;
 let user_id=null;
-let eventFestHost= "192.168.1.42";
-let eventFestPort ="8080";
+let eventFestHost= "localhost";
+let eventFestPort ="8443";
 let events=[];
+let certLocation= './cert/localhost.crt';
 
 //Mòdul que fa les crides al servidor
 // i retorna a qui estigui subscrit als events de resposta com actionLoginReply, o actionSignupReply o actionLogoutReply, actionCreateEventReply, etc.
@@ -16,17 +18,25 @@ module.exports = {
     var pwd = userData.password;
     pwd= crypto.createHash('md5').update(pwd).digest("hex");
 
-    var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/users/connect";
+    var url= "/eventfest/rest/users/connect";
     url += "?login=" + userName;
     url += "&pass=" + pwd;
 
-    var reqGet = http.request(url, function(res) {
+    var optionsGet = {
+      host : eventFestHost,
+      port : eventFestPort,
+      path : url,
+      method : 'GET',
+      ca: [ fs.readFileSync(certLocation) ]
+    };
+
+    var reqGet = https.request(optionsGet, function(res) {
       console.log("statusCode: ", res.statusCode);
       res.on('data', function(userDataResult) {
         var user=  JSON.parse(userDataResult);
         token= user.token;
         console.log("token " +token);
-        console.log("afeterlogin: "+ userDataResult);
+        console.log("afterlogin: "+ userDataResult);
         event.sender.send('actionLoginReply', user)
       });
     });
@@ -43,7 +53,6 @@ module.exports = {
 
     var url="/eventfest/rest/users/create";
 
-    console.log("signupurl:"+ url);
     var user= {
       user_login:userData.name,
       user_pass: pwd_signup,
@@ -62,10 +71,11 @@ module.exports = {
       port : eventFestPort,
       path : url,
       method : 'POST',
-      headers : postheaders
+      headers : postheaders,
+      ca: [ fs.readFileSync(certLocation) ]
     };
 
-    var reqPost = http.request(optionsPost, function(res) {
+    var reqPost = https.request(optionsPost, function(res) {
       console.log("statusCode: ", res.statusCode);
       res.on('data', function(response) {
         console.info('POST result:\n');
@@ -85,11 +95,19 @@ module.exports = {
   logout: function(event, userData) {
     var userName=userData.name;
 
-    var url= "http://"+eventFestHost+":"+ eventFestPort+ "/eventfest/rest/users/disconnect";
+    var url= "/eventfest/rest/users/disconnect";
     url += "?login=" + userName;
     url += "&token=" + token;
 
-    var reqGet = http.request(url, function(res) {
+    var optionsGet = {
+      host : eventFestHost,
+      port : eventFestPort,
+      path : url,
+      method : 'GET',
+      ca: [ fs.readFileSync(certLocation) ]
+    };
+
+    var reqGet = https.request(optionsGet, function(res) {
       console.log("statusCode: ", res.statusCode);
       res.on('data', function(userDataResult) {
         console.info(' result:\n');
@@ -135,10 +153,11 @@ module.exports = {
       port : eventFestPort,
       path : url,
       method : 'POST',
-      headers : postheaders
+      headers : postheaders,
+      ca: [ fs.readFileSync(certLocation) ]
     };
 
-    var reqPost = http.request(optionsPost, function(res) {
+    var reqPost = https.request(optionsPost, function(res) {
       console.log("statusCode: ", res.statusCode);
       res.on('data', function(response) {
         console.info('POST result:\n');
@@ -186,10 +205,11 @@ module.exports = {
       port : eventFestPort,
       path : url,
       method : 'PUT',
-      headers : postheaders
+      headers : postheaders,
+      ca: [ fs.readFileSync(certLocation) ]
     };
 
-    var reqPut = http.request(optionsPut, function(res) {
+    var reqPut = https.request(optionsPut, function(res) {
       console.log("statusCode: ", res.statusCode);
       res.on('data', function(response) {
         process.stdout.write(response); // escriu a la consola
@@ -216,7 +236,7 @@ module.exports = {
   delete: function(event, eventData){
     var eventId=eventData.id;
 
-    var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/delete";
+    var url= "/eventfest/rest/events/delete";
     url += "?token=" + token;
     url += "&id=" + eventId;
     console.log("deleteurl:"+ url);
@@ -225,10 +245,11 @@ module.exports = {
       host : eventFestHost,
       port : eventFestPort,
       path : url,
-      method : 'DELETE'
+      method : 'DELETE',
+      ca: [ fs.readFileSync(certLocation) ]
     };
 
-    var reqGet = http.request(optionsPost, function(res) {
+    var reqGet = https.request(optionsPost, function(res) {
       console.log("statusCode: ", res.statusCode);
       res.on('data', function(eventDataResult) {
         var eventResult=  JSON.parse(eventDataResult);
@@ -242,10 +263,10 @@ module.exports = {
   },
 
   getByFilter: function(event, eventFilterData, allowEdit){
-    var nom= "qualsevol nom";
-    var municipi="qualsevol municipi";
+    var nom= "";
+    var municipi="";
     var tipus="";
-    var datafrom="qualsevol data";
+    var datafrom="";
     var dataTo="";
 
     if(eventFilterData.name!="" && eventFilterData.name){ nom=eventFilterData.name }
@@ -254,7 +275,7 @@ module.exports = {
     if(eventFilterData.from!="" && eventFilterData.from){ datafrom= eventFilterData.from }
     if(eventFilterData.to!="" && eventFilterData.to){ dataTo= eventFilterData.to }
 
-    var url= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/getByFilter";
+    var url= "/eventfest/rest/events/getByFilter";
     url += "?token=" + token;
     url += "&nom="+ nom +"&data="+ datafrom +"&municipi="+municipi;
     console.log(url);
@@ -264,7 +285,15 @@ module.exports = {
     urlTest += "&nom="+ nom +"&from="+ datafrom +"&to="+ dataTo +"&municipi="+municipi + "&tipus="+tipus;
     console.log(urlTest);
 
-    var reqGet = http.request(url, function(res) {
+    var optionsGet = {
+      host : eventFestHost,
+      port : eventFestPort,
+      path : url,
+      method : 'GET',
+      ca: [ fs.readFileSync(certLocation) ]
+    };
+
+    var reqGet = https.request(optionsGet, function(res) {
       console.log("statusCode: ", res.statusCode);
       res.on('data', function(eventDataResult) {
         events=[];
