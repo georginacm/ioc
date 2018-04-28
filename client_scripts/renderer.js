@@ -217,7 +217,7 @@ function fillTableEvents(){
         var cellStart = row.insertCell(2);
         var cellFinish = row.insertCell(3);
         var cellType= row.insertCell(4);
-        cellTitol.innerHTML = response[item].event_title;
+        cellTitol.innerHTML = (response[item].event_title ? response[item].event_title : response[item].event_Title ); 
         cellCity.innerHTML = response[item].event_city;
         cellStart.innerHTML = response[item].event_startDate;
         cellFinish.innerHTML = response[item].event_finishDate;
