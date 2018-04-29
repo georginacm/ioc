@@ -75,6 +75,7 @@ loginButton.addEventListener('click', function(){
       refreshButton.style.visibility="hidden";
       tableEvents.style.display = "";
       showEventsContainer.style.display="";
+      showMapMenu.style.display="";
 
       //en cas de tenir rol administrador, es mostrarán unes opcions específiques del rol
       if(response.user_role== 0 || response.user_role== 1){
@@ -131,6 +132,7 @@ homeLogoutButton.addEventListener('click', function(){
     editEventMenu.style.display = "none";
     tableEvents.style.display = "none";
     showEventsContainer.style.display="none";
+    showMapMenu.style.display="none";
     tableEventsToEdit.style.display = "none";
     refreshButton.style.visibility="hidden";
     document.getElementById('signup_admin').style.display="none"
