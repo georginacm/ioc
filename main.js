@@ -15,8 +15,9 @@ let service= require("./scripts/restClient")
 let mainWindow
 let EditWindow
 let ShowEventWindow
+let MapWindow
 
-  // Crea la finestra principal de l'aplicació i carrega el fitxer index.html
+// Crea la finestra principal de l'aplicació i carrega el fitxer index.html
 function createMainWindow () {
   mainWindow = new BrowserWindow({width: 900, height: 800})
   mainWindow.loadURL(url.format({
@@ -31,8 +32,10 @@ function createMainWindow () {
 
   createEditWindow();
   createShowEventWindow();
+  createMapWindow();
 }
 
+//Funció que crea la fiestra per a editar/crear un event
 function createEditWindow(){
   EditWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true })
   EditWindow.setAlwaysOnTop(true);
@@ -49,6 +52,7 @@ function createEditWindow(){
   })
 };
 
+//Funció que crea la fiestra per a mostrar un event
 function createShowEventWindow(){
   ShowEventWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true, width: 950, height: 900 })
   ShowEventWindow.setAlwaysOnTop(true);
@@ -61,6 +65,23 @@ function createShowEventWindow(){
   ShowEventWindow.on('close', function (event) {
     console.log("close ShowEventWindow");
     ShowEventWindow.hide();
+    event.preventDefault();
+  })
+};
+
+//Funció que crea la fiestra per a mostrar tots els events a un mapa
+function createMapWindow(){
+  MapWindow = new BrowserWindow({parent: mainWindow, modal: true, show: false, autoHideMenuBar:true })
+  MapWindow.setAlwaysOnTop(true);
+  MapWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'templates/mapEvents.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  MapWindow.on('close', function (event) {
+    console.log("close MapWindow");
+    MapWindow.hide();
     event.preventDefault();
   })
 };
@@ -105,7 +126,6 @@ ipcMain.on('invokeLogoutAction', function(event, data){
   console.info("logout data:" + data.name );
   service.logout(event, data);
 })
-
 
 ipcMain.on('invokeEditEventAction', function(event, data){
   console.log("EditWindow data:"+ data)
@@ -169,6 +189,22 @@ ipcMain.on('invokeShowEventAction', function(event, data){
     }
     ShowEventWindow.webContents.send('store-data', resultat);
     ShowEventWindow.show();
+  }catch(error){
+    console.error(error);
+  }
+})
+
+//invocació del ShowMap que ens servirà per visualitzar el mapa amb tots els events
+ipcMain.on('invokeShowMapAction', function (event, data){
+  try{
+    if (MapWindow === null) {
+      createMapWindow()
+    }
+    var resultat=null;
+    resultat=  service.getEvents();
+    console.log("resultat showMap main:" + JSON.stringify(resultat));
+    MapWindow.webContents.send('store-data', resultat);
+    MapWindow.show();
   }catch(error){
     console.error(error);
   }

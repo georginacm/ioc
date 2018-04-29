@@ -1,7 +1,7 @@
 // JS que es carrega desde el index.html
 const {ipcRenderer} = require('electron')
 let username, useremail,role,loginButton,homeLoginButton,homeLogoutButton, homeSignupButton;
-let signupButton, adminToolsMenu, editEventMenu,showEventsMenu, userLoggedName,tableEvents,tableEventsToEdit,showEventsContainer, refreshButton;
+let signupButton, adminToolsMenu, editEventMenu,showEventsMenu,showMapMenu, userLoggedName,tableEvents,tableEventsToEdit,showEventsContainer, refreshButton;
 let filter_name, filter_municipi, filter_inici, filter_fi, filter_tipus;
 
 initObjects();
@@ -18,6 +18,11 @@ showEventsMenu.addEventListener('click', function(){
   filter_tipus.innerHTML="";
   fillTableEvents();
 });
+
+showMapMenu.addEventListener('click', function(){
+  ipcRenderer.send('invokeShowMapAction', "");
+});
+
 
 search_button.addEventListener('click', function () {
 
@@ -128,6 +133,8 @@ homeLogoutButton.addEventListener('click', function(){
     showEventsContainer.style.display="none";
     tableEventsToEdit.style.display = "none";
     refreshButton.style.visibility="hidden";
+    document.getElementById('signup_admin').style.display="none"
+    document.getElementById('signup_admin_label').style.display="none"
     clearTable(tableEvents);
     clearTable(tableEventsToEdit);
   })
@@ -159,6 +166,7 @@ function initObjects(){
   tableEventsToEdit= document.getElementById('tableevents_toEdit');
   refreshButton = document.getElementById('refresh_button');
   showEventsMenu=document.getElementById('showEvents');
+  showMapMenu= document.getElementById('showMap')
   showEventsContainer=document.getElementById('showEventsContainer');
   filter_name=document.getElementById('filter_name');
   filter_municipi=document.getElementById('filter_municipi');
@@ -185,7 +193,7 @@ function fillTableEventsToEdit(){
         var cellFinish = row.insertCell(3);
         var cellType= row.insertCell(4);
         var cellId= row.insertCell(5);
-        cellTitol.innerHTML = (response[item].event_title ? response[item].event_title : response[item].event_Title ); 
+        cellTitol.innerHTML = (response[item].event_title ? response[item].event_title : response[item].event_Title );
         cellCity.innerHTML = response[item].event_city;
         cellStart.innerHTML = response[item].event_startDate;
         cellFinish.innerHTML = response[item].event_finishDate;

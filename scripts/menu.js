@@ -11,15 +11,14 @@ module.exports = {
           {
           label: 'web ioc',
           click () { require('electron').shell.openExternal('https://ioc.xtec.cat') }
-          },
-          {role: 'selectall'}
+          }
         ]
       },
       {
-        label: 'Activitats',
+        label: 'Events',
         submenu: [
-          {role: 'reload'},
-          {role: 'forcereload'},
+          //{role: 'reload'},
+        // {role: 'forcereload'},
           {role: 'toggledevtools'}
         ]
       },

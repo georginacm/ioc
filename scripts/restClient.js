@@ -271,19 +271,15 @@ module.exports = {
 
     if(eventFilterData.name!="" && eventFilterData.name){ nom=eventFilterData.name }
     if(eventFilterData.city!="" && eventFilterData.city){ municipi=eventFilterData.city }
-    if(eventFilterData.type!="" && eventFilterData.type){ tipus= eventFilterData.type }
+    //if(eventFilterData.type!="" && eventFilterData.type){ tipus= eventFilterData.type }
     if(eventFilterData.from!="" && eventFilterData.from){ datafrom= eventFilterData.from }
     if(eventFilterData.to!="" && eventFilterData.to){ dataTo= eventFilterData.to }
 
+
     var url= "/eventfest/rest/events/getByFilter";
     url += "?token=" + token;
-    url += "&nom="+ nom +"&data="+ datafrom +"&municipi="+municipi;
+    url += "&nom="+ nom +"&from="+ datafrom +"&to="+ dataTo +"&municipi="+municipi; // + "&tipus="+tipus;
     console.log(url);
-
-    var urlTest= "http://"+eventFestHost+":"+ eventFestPort+"/eventfest/rest/events/getByFilter";
-    urlTest += "?token=" + token;
-    urlTest += "&nom="+ nom +"&from="+ datafrom +"&to="+ dataTo +"&municipi="+municipi + "&tipus="+tipus;
-    console.log(urlTest);
 
     var optionsGet = {
       host : eventFestHost,
@@ -323,5 +319,9 @@ module.exports = {
       result= resultat[0];
     }
     return result;
+  },
+
+  getEvents: function(){
+    return events;
   }
 }
