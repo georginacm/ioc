@@ -38,13 +38,15 @@ function initMap() {
 
 function addMarkers(map){
   for (i = 0; i < events.length; i++) {
-      var geocoder = new google.maps.Geocoder();
-      geocodeAddress(geocoder, map, events[i].event_address);
+    var geocoder = new google.maps.Geocoder();
+    geocodeAddress(geocoder, map, events[i]);
   }
 };
 
 
-function geocodeAddress(geocoder, resultsMap, address) {
+function geocodeAddress(geocoder, resultsMap, currentEvent) {
+  var address= currentEvent.event_address;
+  var infowindow = new google.maps.InfoWindow();
   geocoder.geocode({'address': address}, function(results, status) {
     if (status === 'OK') {
       resultsMap.setCenter(results[0].geometry.location);
@@ -52,6 +54,14 @@ function geocodeAddress(geocoder, resultsMap, address) {
         map: resultsMap,
         position: results[0].geometry.location
       });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(currentEvent.event_title);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+
     } else {
       alert('Geocode was not successful for the following reason: ' + status);
     }
