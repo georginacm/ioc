@@ -29,14 +29,13 @@ ipcRenderer.on('store-data', function(event, eventAEditar){
     document.getElementById('pac-input').innerHTML= eventAEditar.event_address;
 
     delete_event.style.visibility = "visible";
-
-    let googleApiSrc="https://maps.googleapis.com/maps/api/js?key=AIzaSyC85tUwam0SSFR-ulhqn1d7kjUmd7JytvQ&libraries=places";
-    loadScript(googleApiSrc).then(initMap);
-
   }else{
     console.info("event a editar buit")
     clear();
   }
+
+  let googleApiSrc="https://maps.googleapis.com/maps/api/js?key=AIzaSyC85tUwam0SSFR-ulhqn1d7kjUmd7JytvQ&libraries=places";
+  loadScript(googleApiSrc).then(initMap);
 });
 
 function clear(){
@@ -52,7 +51,7 @@ function clear(){
   delete_event.style.visibility = "hidden";
 };
 
-
+//Comportament del botó de creació ie dició de l'event
 eventCreateButton.addEventListener('click', function(){
   var createData= {
     nom : eventNom.value,
@@ -78,6 +77,7 @@ eventCreateButton.addEventListener('click', function(){
   ipcRenderer.send('invokeCreateEventAction', createData );
 });
 
+//Comportament del botó d'eliminació d'un event
 eventDeleteButton.addEventListener('click', function(){
   console.log("event a eliminar: "+ eventid.innerHTML);
   ipcRenderer.once('actionDeleteEventReply', function(event, response){
@@ -90,7 +90,6 @@ eventDeleteButton.addEventListener('click', function(){
 });
 
 //Google Maps
-
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 41.8688, lng: 2.2195},
@@ -171,8 +170,6 @@ function fillInAddress(place) {
     document.getElementById(component).value = '';
     document.getElementById(component).disabled = false;
   }
-  // Get each component of the address from the place details
-  // and fill the corresponding field on the form.
   for (var i = 0; i < place.address_components.length; i++) {
     var addressType = place.address_components[i].types[0];
     if (componentForm[addressType]) {
@@ -182,6 +179,7 @@ function fillInAddress(place) {
   }
 };
 
+//Funció que ens permet carregar asíncronament l'api de Google maps i tenir control del que farem quan estigui carregat
 function loadScript(src) {
   return new Promise(function (resolve, reject) {
     var s;
@@ -195,15 +193,17 @@ function loadScript(src) {
 
 function geocodeAddress(geocoder, resultsMap) {
   var address = document.getElementById('pac-input').value;
-  geocoder.geocode({'address': address}, function(results, status) {
-    if (status === 'OK') {
-      resultsMap.setCenter(results[0].geometry.location);
-      var marker = new google.maps.Marker({
-        map: resultsMap,
-        position: results[0].geometry.location
-      });
-    } else {
-      alert('Geocode was not successful for the following reason: ' + status);
-    }
+  if(address!=null && address!=''){
+    geocoder.geocode({'address': address}, function(results, status) {
+      if (status === 'OK') {
+        resultsMap.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+          map: resultsMap,
+          position: results[0].geometry.location
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
   });
+}
 };

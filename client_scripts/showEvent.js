@@ -30,7 +30,7 @@ ipcRenderer.on('store-data', function(event, eventAEditar){
   }
 });
 
-
+//Funció que ens permet carregar asíncronament l'api de Google maps i tenir control del que farem quan estigui carregat
 function loadScript(src) {
     return new Promise(function (resolve, reject) {
         var s;
@@ -42,6 +42,7 @@ function loadScript(src) {
     });
 };
 
+//Tractament de GoogleMps
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 10,

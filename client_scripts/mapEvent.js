@@ -3,7 +3,7 @@ var events= "";
 
 
 
-//Al accedir a la pantalla de visualització del mapa, estem subscrits a les dades d'un event, que utilitzarem per omplir el mapa.
+//Al accedir a la pantalla de visualització del mapa, estem subscrits a les dades de tots els events, que utilitzarem per omplir el mapa amb la api de GoogleMaps.
 
 ipcRenderer.on('store-data', function(event, eventsDisponibles){
   if(eventsDisponibles!=null){
@@ -57,7 +57,8 @@ function geocodeAddress(geocoder, resultsMap, currentEvent) {
 
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
-          infowindow.setContent(currentEvent.event_title);
+          var title= currentEvent.event_title ? currentEvent.event_title: currentEvent.event_Title;
+          infowindow.setContent(title);
           infowindow.open(map, marker);
         }
       })(marker, i));

@@ -6,6 +6,7 @@ let filter_name, filter_municipi, filter_inici, filter_fi, filter_tipus;
 
 initObjects();
 
+//comportament del botó de menú que mostra els events
 showEventsMenu.addEventListener('click', function(){
   tableEventsToEdit.style.display = "none";
   refreshButton.style.visibility="hidden";
@@ -19,17 +20,15 @@ showEventsMenu.addEventListener('click', function(){
   fillTableEvents();
 });
 
+//comportament del botó de menú que mostra tots els events a un mapa
 showMapMenu.addEventListener('click', function(){
   ipcRenderer.send('invokeShowMapAction', "");
 });
 
-
+//comportament del botó del filtre d'events 
 search_button.addEventListener('click', function () {
-
   ipcRenderer.on('actionGetByFilterEventReply', function(event, response){
-
   });
-
   ipcRenderer.send('invokeGetEventsAction', {
      name:filter_name.value ,
      city:filter_municipi.value ,
@@ -151,7 +150,7 @@ editEvent.addEventListener('click', function(){
 });
 
 
-
+//funció que es crida al inici de la renderització i que cera tots els objetes amb els que es treballaran
 function initObjects(){
   username= document.getElementById('userName_home');
   useremail = document.getElementById('userEmail_home');
